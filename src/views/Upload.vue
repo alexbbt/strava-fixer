@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
+  <div class="upload">
     <h1>Upload your Strava GPX File</h1>
     <input ref="file" type="file" @change="uploadFile" />
   </div>
@@ -7,13 +7,13 @@
 
 <script>
 // make this a drop area
-import { mapMutations } from 'vuex';
-import { SET_ORIGINAL_FILE } from '../store/mutations';
+import { mapActions } from 'vuex';
+import { PARSE_FILE } from '../store/actions';
 
 export default {
   methods: {
-    ...mapMutations({
-      setFile: SET_ORIGINAL_FILE,
+    ...mapActions({
+      parseFile: PARSE_FILE,
     }),
     uploadFile(event) {
       if (!window.FileReader) return; // Browser is not compatible
@@ -28,7 +28,8 @@ export default {
           return;
         }
 
-        this.setFile(evt.target.result);
+        this.parseFile(evt.target.result);
+        this.$router.push('map');
       };
 
       reader.readAsText(event.target.files[0]);
@@ -36,3 +37,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+  .upload {
+    text-align: center;
+  }
+</style>
