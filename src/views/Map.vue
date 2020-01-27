@@ -1,39 +1,41 @@
 <template>
-  <MglMap
-    :accessToken="accessToken"
-    :mapStyle="style"
-    @load="onMapLoad"
-    @zoom="handleFrameChange"
-    @move="handleFrameChange"
-  >
-    <MglGeojsonLayer
-      sourceId="route"
-      :source="geoJsonLine"
-      layerId="mapLayer"
-      :layer="geojsonLineLayer"
-    />
-    <!-- <MglGeojsonLayer
-      sourceId="points"
-      :source="geoJsonPoints"
-      layerId="pointsLayer"
-      :layer="geojsonPointesLayer"
-    /> -->
-    <MglMarker v-for="(point, index) in filteredPoints"
-      :key="index"
-      :coordinates="point"
-      color="blue"
-      :draggable="true"
-    />
-  </MglMap>
+    <MglMap
+      ref="map"
+      :accessToken="accessToken"
+      :mapStyle="style"
+      @load="onMapLoad"
+      @mousemove="handleMouseMove"
+    >
+      <MglGeojsonLayer
+        sourceId="route"
+        :source="geoJson"
+        layerId="mapLayer"
+        :layer="geojsonLineLayer"
+      />
+      <MglMarker v-if="currentPoint.show"
+        :coordinates="currentPoint.point"
+        anchor="center"
+        :draggable="true"
+        @dragstart="currentPoint.dragging = true"
+        @dragend="currentPoint.dragging = false; handlePointDrag($event)"
+      >
+        <svg slot="marker" height="20" width="20">
+          <circle cx="10" cy="10" r="8" stroke="black" stroke-width="1" fill="blue" />
+        </svg>
+      </MglMarker>
+    </MglMap>
 </template>
 
 <script>
 // make this a drop area
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import Mapbox from 'mapbox-gl';
 import { MglMap, MglGeojsonLayer, MglMarker } from 'vue-mapbox';
 
-import { GET_ORIGINAL_FILE } from '../store/getters';
+import { distanceBetweenPoints } from '../utils';
+
+import { UPDATE_POINT } from '../store/actions';
+import { GET_POINTS, GET_CENTER_POINT, GET_GEO_JSON } from '../store/getters';
 
 export default {
   components: {
@@ -51,114 +53,79 @@ export default {
         id: 'route-layer',
         type: 'line',
       },
-      geojsonPointesLayer: {
-        id: 'points-layer',
-        type: 'symbol',
+      currentPoint: {
+        show: false,
+        point: [0, 0],
+        index: -1,
+        lastUpdate: 0,
+        dragging: false,
       },
-      zoom: 12,
-      position: '',
-      filteredPoints: [],
+      lastGeo: '',
     };
   },
   mounted() {
-    if (this.file === '') {
+    if (!this.points) {
       this.$router.push('upload');
     }
-    // console.log(this.file);
   },
   computed: {
     ...mapGetters({
-      file: GET_ORIGINAL_FILE,
+      points: GET_POINTS,
+      center: GET_CENTER_POINT,
+      geoJson: GET_GEO_JSON,
     }),
-    points() {
-      if (!this.file) {
-        return [[0, 0]];
-      }
-      return this.file.gpx.trk.trkseg.trkpt
-        .map(point => [
-          parseFloat(point['@_lon']),
-          parseFloat(point['@_lat']),
-        ]);
-    },
-    center() {
-      const { length } = this.points;
-      return this.points.reduce((center, p, i) => {
-        /* eslint-disable no-param-reassign */
-        center[0] += p[0];
-        center[1] += p[1];
-
-        if (i === length - 1) {
-          center[0] /= length;
-          center[1] /= length;
-        }
-
-        return center;
-        /* eslint-enable no-param-reassign */
-      }, [0, 0]);
-    },
-    geoJsonLine() {
-      return {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'LineString',
-            coordinates: this.points,
-          },
-        },
-      };
-    },
-    geoJsonPoints() {
-      return {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          properties: {},
-          features: this.points.map(point => ({
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: point,
-            },
-          })),
-        },
-      };
-    },
   },
   methods: {
-    handleFrameChange(event) {
-      const zoom = Math.round(event.map.getZoom() * 2) / 2;
-      const position = event.map.getBounds().toString();
-      if (
-        (this.zoom !== zoom)
-          || (this.position !== position)
-      ) {
-        this.zoom = zoom;
-        this.position = position;
-
-        if (zoom > 14.5) {
-          const bounds = event.map.getBounds();
-          this.filteredPoints = this.points.filter(point => bounds.contains(point));
-        } else {
-          this.filteredPoints = [];
-        }
-
-        // console.log(this.zoom);
-        // window.map = event.map;
+    ...mapActions({
+      updatePoint: UPDATE_POINT,
+    }),
+    handleMouseMove(event) {
+      if (this.currentPoint.dragging) {
+        return;
       }
-    },
-    async onMapLoad(event) {
-      this.map = event.component.map;
 
+      if (Date.now() - 200 < this.currentPoint.lastUpdate) {
+        // custom debounce.
+        return;
+      }
+      this.currentPoint.lastUpdate = Date.now();
+
+      window.event = event;
+      const cords = [
+        event.mapboxEvent.lngLat.lng,
+        event.mapboxEvent.lngLat.lat,
+      ];
+      const { point, index } = this.points
+        .map((p, i) => ({
+          point: p,
+          index: i,
+        }))
+        .sort((a, b) => (
+          distanceBetweenPoints(a.point, cords)
+          - distanceBetweenPoints(b.point, cords)
+        ))
+        .shift();
+      this.currentPoint.index = index;
+      this.currentPoint.point = point;
+      this.currentPoint.show = true;
+    },
+    handlePointDrag(event) {
+      const cords = event.marker.getLngLat();
+      this.updatePoint({
+        index: this.currentPoint.index,
+        point: [
+          cords.lng,
+          cords.lat,
+        ],
+      });
+    },
+    onMapLoad(event) {
       const asyncActions = event.component.actions;
-      const newParams = await asyncActions.flyTo({
+      asyncActions.jumpTo({
         center: this.center,
         zoom: 12,
         speed: 1,
       });
-      console.log(newParams);
-      // window.marker = this.$refs['marker-1'];
     },
   },
 };
