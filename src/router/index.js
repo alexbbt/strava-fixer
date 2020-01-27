@@ -20,6 +20,11 @@ const routes = [
     name: 'map',
     component: () => import(/* webpackChunkName: "map" */ '../views/Map.vue'),
   },
+  {
+    path: '/export',
+    name: 'export',
+    component: () => import(/* webpackChunkName: "export" */ '../views/Export.vue'),
+  },
 ];
 
 const router = new VueRouter({

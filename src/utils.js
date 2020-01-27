@@ -13,3 +13,7 @@ export function clone(obj) {
     ),
   );
 }
+
+export function getPoints(obj) {
+  return obj.gpx.trk.trkseg.trkpt;
+}

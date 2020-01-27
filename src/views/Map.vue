@@ -68,6 +68,9 @@ export default {
       this.$router.push('upload');
     }
   },
+  beforeDestroy() {
+    this.$refs.map.map.remove();
+  },
   computed: {
     ...mapGetters({
       points: GET_POINTS,

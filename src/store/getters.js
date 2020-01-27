@@ -1,15 +1,28 @@
+import Parser from 'fast-xml-parser';
+import XMLFormatter from 'xml-formatter';
+
+import { getPoints } from '../utils';
+
 export const GET_ORIGINAL_FILE = 'GET_ORIGINAL_FILE';
 export const GET_EDITABLE_FILE = 'GET_EDITABLE_FILE';
+export const GET_ACTIVITY_NAME = 'GET_ACTIVITY_NAME';
 export const GET_POINTS = 'GET_POINTS';
 export const GET_CENTER_POINT = 'GET_CENTER_POINT';
 export const GET_GEO_JSON = 'GET_GEO_JSON';
+export const GET_XML_STRING = 'GET_XML_STRING';
 
 const getters = {
   [GET_ORIGINAL_FILE]: state => state.originalFile,
   [GET_EDITABLE_FILE]: state => state.editableFile,
+  [GET_ACTIVITY_NAME]: (state) => {
+    if (!state.originalFile) {
+      return '';
+    }
+    return state.originalFile.gpx.trk.name.replace(/\s/, '_');
+  },
   [GET_POINTS]: (state) => {
     if (state.editableFile) {
-      return state.editableFile.gpx.trk.trkseg.trkpt
+      return getPoints(state.editableFile)
         .map(point => [
           parseFloat(point['@_lon']),
           parseFloat(point['@_lat']),
@@ -44,6 +57,18 @@ const getters = {
       },
     },
   }),
+  [GET_XML_STRING]: (state) => {
+    // eslint-disable-next-line new-cap
+    const parser = new Parser.j2xParser({
+      ignoreAttributes: false,
+    });
+    const xml = parser.parse(state.editableFile);
+
+    return XMLFormatter(`<?xml version="1.0" encoding="UTF-8"?>${xml}`, {
+      collapseContent: true,
+      indentation: ' ',
+    });
+  },
 };
 
 export default getters;
