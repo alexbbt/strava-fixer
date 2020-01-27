@@ -1,25 +1,30 @@
 # Strava Fixer
+
 Edit data points in your Strava recordings to fix GPS glitches.
 
-## Project setup
-```
-npm install
-```
+Visit [strava-fixer.bell-towne.com](https://strava-fixer.bell-towne.com/) to use the tool.
 
-### Compiles and hot-reloads for development
-```
+## Development
+
+### Setup and Run Dev Server
+
+``` Bash
+npm install
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### Linting
 
-### Lints and fixes files
-```
+Run this before submitting a PR
+
+``` Bash
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Contributing
+
+1. Fork it on Github [https://github.com/alexbbt/strave-fixer](https://github.com/alexbbt/strave-fixer)
+2. Create your feature branch: `git checkout -b my-new-feature`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin my-new-feature`
+5. Submit a pull request against the master branch and I will review it.
