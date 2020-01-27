@@ -38,6 +38,7 @@ import { UPDATE_POINT } from '../store/actions';
 import { GET_POINTS, GET_CENTER_POINT, GET_GEO_JSON } from '../store/getters';
 
 export default {
+  name: 'map',
   components: {
     MglMap,
     MglGeojsonLayer,

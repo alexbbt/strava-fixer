@@ -11,6 +11,7 @@ import { mapActions } from 'vuex';
 import { PARSE_FILE } from '../store/actions';
 
 export default {
+  name: 'upload',
   methods: {
     ...mapActions({
       parseFile: PARSE_FILE,

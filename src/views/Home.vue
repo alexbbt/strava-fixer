@@ -1,24 +1,24 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Welcome to the Strave Fixer Tool</h1>
+    <p>Before you get started, you will need to export your strave gdx file.</p>
+    <img src="../assets/Exporting your Data and Bulk Export – Eng.png">
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
-
 export default {
   name: 'home',
-  components: {
-    HelloWorld,
-  },
 };
 </script>
 
 <style lang="scss" scoped>
   .home {
     text-align: center;
+
+    img {
+      width: 100%;
+      max-width: 600px;
+    }
   }
 </style>
