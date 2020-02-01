@@ -34,8 +34,10 @@ import { mapGetters, mapActions } from 'vuex';
 
 import { distanceBetweenPoints } from '../utils';
 
-import { UPDATE_POINT } from '../store/actions';
-import { GET_COORDINATES, GET_CENTER_POINT, GET_GEO_JSON } from '../store/getters';
+import { UPDATE_POINT, SET_CURRENT_POINT_INDEX } from '../store/actions';
+import {
+  GET_COORDINATES, GET_CENTER_POINT, GET_GEO_JSON, GET_CURRENT_POINT_INDEX,
+} from '../store/getters';
 
 export default {
   name: 'route-map',
@@ -43,12 +45,6 @@ export default {
     MglMap,
     MglGeojsonLayer,
     MglMarker,
-  },
-  props: {
-    currentPointIndex: {
-      type: Number,
-      required: true,
-    },
   },
   data() {
     return {
@@ -69,6 +65,7 @@ export default {
       coordinates: GET_COORDINATES,
       center: GET_CENTER_POINT,
       geoJson: GET_GEO_JSON,
+      currentPointIndex: GET_CURRENT_POINT_INDEX,
     }),
     currentPointCoordinates() {
       return this.coordinates[this.currentPointIndex];
@@ -82,6 +79,7 @@ export default {
   methods: {
     ...mapActions({
       updatePoint: UPDATE_POINT,
+      setCurrentPointIndex: SET_CURRENT_POINT_INDEX,
     }),
     onMapLoad(event) {
       const asyncActions = event.component.actions;
@@ -117,8 +115,7 @@ export default {
           - distanceBetweenPoints(b.point, cords)
         ))
         .shift();
-
-      this.$emit('set-current-point', index);
+      this.setCurrentPointIndex(index);
     },
     handlePointDrag(event) {
       const cords = event.marker.getLngLat();

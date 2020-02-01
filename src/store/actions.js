@@ -2,11 +2,16 @@ import Parser from 'fast-xml-parser';
 
 import { clone, getPoints } from '../utils';
 
-import { SET_ORIGINAL_FILE, SET_EDITABLE_FILE } from './mutations';
+import {
+  SET_ORIGINAL_FILE,
+  SET_EDITABLE_FILE,
+  SET_CURRENT_POINT,
+} from './mutations';
 import { GET_EDITABLE_FILE } from './getters';
 
 export const PARSE_FILE = 'PARSE_FILE';
 export const UPDATE_POINT = 'UPDATE_POINT';
+export const SET_CURRENT_POINT_INDEX = 'SET_CURRENT_POINT_INDEX';
 
 const options = {
   ignoreAttributes: false,
@@ -38,6 +43,9 @@ const actions = {
     }
 
     commit(SET_EDITABLE_FILE, editableJson);
+  },
+  [SET_CURRENT_POINT_INDEX]({ commit }, index) {
+    commit(SET_CURRENT_POINT, index);
   },
 };
 
