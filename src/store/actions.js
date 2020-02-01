@@ -21,12 +21,21 @@ const actions = {
     commit(SET_ORIGINAL_FILE, originalJson);
     commit(SET_EDITABLE_FILE, editableJson);
   },
-  [UPDATE_POINT]({ commit, getters }, { point, index }) {
+  [UPDATE_POINT](
+    { commit, getters },
+    {
+      index, point, key, value,
+    },
+  ) {
     const editableJson = clone(getters[GET_EDITABLE_FILE]);
     const currentPoint = getPoints(editableJson)[index];
 
-    currentPoint['@_lon'] = `${point[0]}`;
-    currentPoint['@_lat'] = `${point[1]}`;
+    if (point) {
+      currentPoint['@_lon'] = `${point[0]}`;
+      currentPoint['@_lat'] = `${point[1]}`;
+    } else {
+      currentPoint[key] = value;
+    }
 
     commit(SET_EDITABLE_FILE, editableJson);
   },

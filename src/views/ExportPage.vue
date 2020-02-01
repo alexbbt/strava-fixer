@@ -16,7 +16,7 @@ import {
 import { getPoints } from '../utils';
 
 export default {
-  name: 'export',
+  name: 'export-page',
   mounted() {
     if (!this.original) {
       this.$router.push('upload');

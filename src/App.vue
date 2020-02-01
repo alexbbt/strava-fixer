@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/upload">Upload</router-link> |
       <router-link to="/export">Export</router-link>
-    </div>
+    </div> -->
     <router-view/>
   </div>
 </template>
@@ -35,5 +35,15 @@ html, body, #app {
       color: #42b983;
     }
   }
+}
+
+input[type=datetime] {
+  height: 38px;
+  padding: 6px 10px;
+  background-color: #fff;
+  border: 1px solid #D1D1D1;
+  border-radius: 4px;
+  box-shadow: none;
+  box-sizing: border-box;
 }
 </style>
