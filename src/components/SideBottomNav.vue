@@ -8,9 +8,9 @@
         name="index"
         type="number"
         :value="currentPointIndex"
-        @input="setCurrentPointIndex($event.target.value)"
         min="0"
-      />
+        @input="setCurrentPointIndex($event.target.value)"
+      >
       <label for="time">Time</label>
       <input
         class="u-full-width"
@@ -18,7 +18,7 @@
         type="datetime"
         :value="currentPoint['time']"
         @input="updatePoint('time', $event.target.value)"
-      />
+      >
       <label for="ele">Elevation</label>
       <input
         class="u-full-width"
@@ -26,7 +26,7 @@
         type="text"
         :value="currentPoint['ele']"
         @input="updatePoint('ele', $event.target.value)"
-      />
+      >
       <label for="lat">Lat</label>
       <input
         class="u-full-width"
@@ -34,7 +34,7 @@
         type="text"
         :value="currentPoint['@_lat']"
         @input="updatePoint('@_lat', $event.target.value)"
-      />
+      >
       <label for="lon">Long</label>
       <input
         class="u-full-width"
@@ -42,9 +42,14 @@
         type="text"
         :value="currentPoint['@_lon']"
         @input="updatePoint('@_lon', $event.target.value)"
-      />
-      <hr />
-      <router-link class="button button-primary" to="/export">Export</router-link>
+      >
+      <hr>
+      <router-link
+        class="button button-primary"
+        to="/export"
+      >
+        Export
+      </router-link>
     </div>
     <div class="nav bottom-nav">
       <p>Current Point</p>
@@ -56,7 +61,7 @@
             type="datetime"
             :value="currentPoint['time']"
             @input="updatePoint('time', $event.target.value)"
-          />
+          >
         </div>
         <div class="alex-one-half column">
           <label for="ele">Elevation</label>
@@ -65,7 +70,7 @@
             type="text"
             :value="currentPoint['ele']"
             @input="updatePoint('ele', $event.target.value)"
-          />
+          >
         </div>
       </div>
       <div class="row">
@@ -76,7 +81,7 @@
             type="text"
             :value="currentPoint['@_lat']"
             @input="updatePoint('@_lat', $event.target.value)"
-          />
+          >
         </div>
         <div class="alex-one-half column">
           <label for="lon">Long</label>
@@ -85,11 +90,16 @@
             type="text"
             :value="currentPoint['@_lon']"
             @input="updatePoint('@_lon', $event.target.value)"
-          />
+          >
         </div>
       </div>
-      <hr />
-      <router-link class="button button-primary" to="/export">Export</router-link>
+      <hr>
+      <router-link
+        class="button button-primary"
+        to="/export"
+      >
+        Export
+      </router-link>
     </div>
   </div>
 </template>
@@ -101,7 +111,7 @@ import { UPDATE_POINT, SET_CURRENT_POINT_INDEX } from '../store/actions';
 import { GET_CURRENT_POINT, GET_CURRENT_POINT_INDEX } from '../store/getters';
 
 export default {
-  name: 'side-bottom-nav',
+  name: 'SideBottomNav',
   computed: {
     ...mapGetters({
       currentPoint: GET_CURRENT_POINT,

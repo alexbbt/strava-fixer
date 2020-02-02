@@ -1,15 +1,15 @@
 <template>
   <MglMap
     ref="map"
-    :accessToken="accessToken"
-    :mapStyle="style"
+    :access-token="accessToken"
+    :map-style="style"
     @load="onMapLoad"
     @mousemove="handleMouseMove"
   >
     <MglGeojsonLayer
-      sourceId="route"
+      source-id="route"
       :source="geoJson"
-      layerId="mapLayer"
+      layer-id="mapLayer"
       :layer="geojsonLayer"
     />
     <MglMarker
@@ -19,8 +19,19 @@
       @dragstart="dragging = true"
       @dragend="dragging = false; handlePointDrag($event)"
     >
-      <svg slot="marker" height="20" width="20">
-        <circle cx="10" cy="10" r="8" stroke="black" stroke-width="1" fill="blue" />
+      <svg
+        slot="marker"
+        height="20"
+        width="20"
+      >
+        <circle
+          cx="10"
+          cy="10"
+          r="8"
+          stroke="black"
+          stroke-width="1"
+          fill="blue"
+        />
       </svg>
     </MglMarker>
   </MglMap>
@@ -40,7 +51,7 @@ import {
 } from '../store/getters';
 
 export default {
-  name: 'route-map',
+  name: 'RouteMap',
   components: {
     MglMap,
     MglGeojsonLayer,

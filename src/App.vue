@@ -5,7 +5,7 @@
       <router-link to="/upload">Upload</router-link> |
       <router-link to="/export">Export</router-link>
     </div> -->
-    <router-view/>
+    <router-view />
   </div>
 </template>
 

@@ -2,8 +2,12 @@
   <div class="upload">
     <h1>Export Modified File</h1>
     <p>Changed Points {{ diff }} </p>
-    <button @click="back">Go Back</button>
-    <button @click="exportFile">Export</button>
+    <button @click="back">
+      Go Back
+    </button>
+    <button @click="exportFile">
+      Export
+    </button>
   </div>
 </template>
 
@@ -16,12 +20,7 @@ import {
 import { getPoints } from '../utils';
 
 export default {
-  name: 'export-page',
-  mounted() {
-    if (!this.original) {
-      this.$router.push('upload');
-    }
-  },
+  name: 'ExportPage',
   computed: {
     ...mapGetters({
       original: GET_ORIGINAL_FILE,
@@ -47,6 +46,11 @@ export default {
       });
       return changedValues.length;
     },
+  },
+  mounted() {
+    if (!this.original) {
+      this.$router.push('upload');
+    }
   },
   methods: {
     back() {

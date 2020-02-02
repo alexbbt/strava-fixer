@@ -1,7 +1,11 @@
 <template>
   <div class="upload">
     <h1>Upload your Strava GPX File</h1>
-    <input ref="file" type="file" @change="uploadFile" />
+    <input
+      ref="file"
+      type="file"
+      @change="uploadFile"
+    >
   </div>
 </template>
 
@@ -11,7 +15,7 @@ import { mapActions } from 'vuex';
 import { PARSE_FILE } from '../store/actions';
 
 export default {
-  name: 'upload-page',
+  name: 'UploadPage',
   methods: {
     ...mapActions({
       parseFile: PARSE_FILE,

@@ -18,7 +18,7 @@ import RouteMap from '../components/RouteMap.vue';
 import SideBottomNav from '../components/SideBottomNav.vue';
 
 export default {
-  name: 'map-page',
+  name: 'MapPage',
   components: {
     RouteMap,
     SideBottomNav,
@@ -28,16 +28,16 @@ export default {
       currentPointIndex: 0,
     };
   },
+  computed: {
+    ...mapGetters({
+      points: GET_POINTS,
+    }),
+  },
   mounted() {
     if (!this.points) {
       this.$router.push('upload');
     }
     window.points = this.points;
-  },
-  computed: {
-    ...mapGetters({
-      points: GET_POINTS,
-    }),
   },
   methods: {
     setCurrentPointIndex(index) {
