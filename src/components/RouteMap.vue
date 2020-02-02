@@ -12,34 +12,18 @@
       layer-id="mapLayer"
       :layer="geojsonLayer"
     />
-    <MglMarker
+    <CircleMarker
       :coordinates="currentPointCoordinates"
-      anchor="center"
-      :draggable="true"
       @dragstart="dragging = true"
       @dragend="dragging = false; handlePointDrag($event)"
-    >
-      <svg
-        slot="marker"
-        height="20"
-        width="20"
-      >
-        <circle
-          cx="10"
-          cy="10"
-          r="8"
-          stroke="black"
-          stroke-width="1"
-          fill="blue"
-        />
-      </svg>
-    </MglMarker>
+      @click="clickPoint"
+    />
   </MglMap>
 </template>
 
 <script>
 import Mapbox from 'mapbox-gl';
-import { MglMap, MglGeojsonLayer, MglMarker } from 'vue-mapbox';
+import { MglMap, MglGeojsonLayer } from 'vue-mapbox';
 
 import { mapGetters, mapActions } from 'vuex';
 
@@ -50,12 +34,14 @@ import {
   GET_COORDINATES, GET_CENTER_POINT, GET_GEO_JSON, GET_CURRENT_POINT_INDEX,
 } from '../store/getters';
 
+import CircleMarker from './CircleMarker';
+
 export default {
   name: 'RouteMap',
   components: {
     MglMap,
     MglGeojsonLayer,
-    MglMarker,
+    CircleMarker,
   },
   data() {
     return {
@@ -100,6 +86,9 @@ export default {
         speed: 1,
       });
     },
+    clickPoint(event) {
+      console.log(event);
+    },
     handleMouseMove(event) {
       if (this.dragging) {
         return;
@@ -126,6 +115,8 @@ export default {
           - distanceBetweenPoints(b.point, cords)
         ))
         .shift();
+
+      console.log(index);
       this.setCurrentPointIndex(index);
     },
     handlePointDrag(event) {
