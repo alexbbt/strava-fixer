@@ -2,12 +2,12 @@
   <div class="home">
     <h1>Welcome to the Strave Fixer Tool</h1>
     <p>Before you get started, you will need to export your strave gdx file.</p>
-    <router-link
-      class="button button-primary"
+    <v-btn
       to="/upload"
+      color="primary"
     >
       Get Started
-    </router-link>
+    </v-btn>
     <br>
     <img src="../assets/Exporting your Data and Bulk Export – Eng.png">
   </div>

@@ -1,10 +1,9 @@
 <template>
   <div class="page">
-    <SideBottomNav />
     <div class="map">
       <RouteMap />
     </div>
-    <SideBottomNav />
+    <BottomNav />
   </div>
 </template>
 
@@ -14,14 +13,14 @@ import { mapGetters } from 'vuex';
 
 import { GET_POINTS } from '../store/getters';
 
+import BottomNav from '../components/BottomNav';
 import RouteMap from '../components/RouteMap';
-import SideBottomNav from '../components/SideBottomNav';
 
 export default {
   name: 'MapPage',
   components: {
     RouteMap,
-    SideBottomNav,
+    BottomNav,
   },
   data() {
     return {
