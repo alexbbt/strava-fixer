@@ -83,7 +83,7 @@ export default {
     },
   },
   beforeDestroy() {
-    if (this.$refs.map) {
+    if (this.$refs.map && this.$refs.map.map) {
       this.$refs.map.map.remove();
     }
   },

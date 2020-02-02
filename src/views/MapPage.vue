@@ -4,6 +4,7 @@
       <RouteMap />
     </div>
     <BottomNav />
+    <ActionMenu />
   </div>
 </template>
 
@@ -13,14 +14,16 @@ import { mapGetters } from 'vuex';
 
 import { GET_POINTS } from '../store/getters';
 
+import ActionMenu from '../components/ActionMenu';
 import BottomNav from '../components/BottomNav';
 import RouteMap from '../components/RouteMap';
 
 export default {
   name: 'MapPage',
   components: {
-    RouteMap,
+    ActionMenu,
     BottomNav,
+    RouteMap,
   },
   data() {
     return {
@@ -50,15 +53,10 @@ export default {
 <style lang="scss" scoped>
 .page {
   height: 100%;
+  width: 100%;
 
   .map {
     height: 100%;
-
-    @media only screen and (max-width: 550px) {
-      & {
-        height: calc(100% - 400px);
-      }
-    }
   }
 }
 </style>
