@@ -3,8 +3,8 @@
     <div class="map">
       <RouteMap />
     </div>
-    <BottomNav />
     <ActionMenu />
+    <BottomNav />
   </div>
 </template>
 
@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     setCurrentPointIndex(index) {
-      console.log(index);
       this.currentPointIndex = index;
     },
   },

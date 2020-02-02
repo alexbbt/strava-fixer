@@ -5,7 +5,6 @@
     :bottom="true"
     :right="true"
     direction="top"
-    :open-on-hover="true"
     transition="slide-y-reverse-transition"
   >
     <template v-slot:activator>
@@ -19,7 +18,7 @@
           mdi-close
         </v-icon>
         <v-icon v-else>
-          mdi-account-circle
+          mdi-pencil
         </v-icon>
       </v-btn>
     </template>
@@ -27,7 +26,17 @@
       fab
       dark
       small
+      color="indigo"
+      @click.stop="$emit('line')"
+    >
+      <v-icon>mdi-chart-timeline-variant</v-icon>
+    </v-btn>
+    <v-btn
+      fab
+      dark
+      small
       color="green"
+      @click.stop="$emit('edit')"
     >
       <v-icon>mdi-pencil</v-icon>
     </v-btn>
@@ -35,15 +44,8 @@
       fab
       dark
       small
-      color="indigo"
-    >
-      <v-icon>mdi-plus</v-icon>
-    </v-btn>
-    <v-btn
-      fab
-      dark
-      small
       color="red"
+      @click.stop="deletePoint"
     >
       <v-icon>mdi-delete</v-icon>
     </v-btn>
@@ -51,12 +53,21 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
+import { DELETE_CURRENT_POINT } from '../store/actions';
+
 export default {
   name: 'ActionMenu',
   data() {
     return {
       fab: false,
     };
+  },
+  methods: {
+    ...mapActions({
+      deletePoint: DELETE_CURRENT_POINT,
+    }),
   },
 };
 </script>

@@ -13,10 +13,17 @@
       :layer="geojsonLayer"
     />
     <CircleMarker
+      color="blue"
+      :coordinates="hoverPoint.coordinates"
+      @click="clickPoint(hoverPoint.index)"
+    />
+    <CircleMarker
+      v-if="currentPointCoordinates"
+      color="green"
       :coordinates="currentPointCoordinates"
+      :draggable="true"
       @dragstart="dragging = true"
       @dragend="dragging = false; handlePointDrag($event)"
-      @click="clickPoint"
     />
   </MglMap>
 </template>
@@ -55,6 +62,10 @@ export default {
       },
       lastUpdate: 0,
       dragging: false,
+      hoverPoint: {
+        index: 0,
+        coordinates: [0, 0],
+      },
     };
   },
   computed: {
@@ -65,6 +76,9 @@ export default {
       currentPointIndex: GET_CURRENT_POINT_INDEX,
     }),
     currentPointCoordinates() {
+      if (this.currentPointIndex === -1) {
+        return null;
+      }
       return this.coordinates[this.currentPointIndex];
     },
   },
@@ -80,14 +94,19 @@ export default {
     }),
     onMapLoad(event) {
       const asyncActions = event.component.actions;
-      asyncActions.jumpTo({
-        center: this.center,
-        zoom: 12,
-        speed: 1,
+
+      const fitBounds = this.coordinates.reduce(
+        (bounds, coord) => bounds.extend(coord),
+        new Mapbox.LngLatBounds(this.coordinates[0], this.coordinates[0]),
+      );
+
+      asyncActions.fitBounds(fitBounds, {
+        padding: 20,
+        duration: 0,
       });
     },
     clickPoint(event) {
-      console.log(event);
+      this.setCurrentPointIndex(event);
     },
     handleMouseMove(event) {
       if (this.dragging) {
@@ -105,7 +124,7 @@ export default {
         event.mapboxEvent.lngLat.lng,
         event.mapboxEvent.lngLat.lat,
       ];
-      const { index } = this.coordinates
+      const { index, point } = this.coordinates
         .map((p, i) => ({
           point: p,
           index: i,
@@ -116,8 +135,8 @@ export default {
         ))
         .shift();
 
-      console.log(index);
-      this.setCurrentPointIndex(index);
+      this.hoverPoint.index = index;
+      this.hoverPoint.coordinates = point;
     },
     handlePointDrag(event) {
       const cords = event.marker.getLngLat();
