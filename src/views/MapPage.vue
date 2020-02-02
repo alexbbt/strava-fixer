@@ -1,9 +1,13 @@
 <template>
   <div class="page">
-    <div class="map">
+    <div
+      class="map"
+      :class="{ 'show-nav': showNav }"
+    >
       <RouteMap />
+      <ActionMenu />
+      <HeadsUpDisplay />
     </div>
-    <ActionMenu />
     <BottomNav />
   </div>
 </template>
@@ -16,6 +20,7 @@ import { GET_POINTS } from '../store/getters';
 
 import ActionMenu from '../components/ActionMenu';
 import BottomNav from '../components/BottomNav';
+import HeadsUpDisplay from '../components/HeadsUpDisplay';
 import RouteMap from '../components/RouteMap';
 
 export default {
@@ -23,12 +28,8 @@ export default {
   components: {
     ActionMenu,
     BottomNav,
+    HeadsUpDisplay,
     RouteMap,
-  },
-  data() {
-    return {
-      currentPointIndex: 0,
-    };
   },
   computed: {
     ...mapGetters({
@@ -41,11 +42,6 @@ export default {
     }
     window.points = this.points;
   },
-  methods: {
-    setCurrentPointIndex(index) {
-      this.currentPointIndex = index;
-    },
-  },
 };
 </script>
 
@@ -56,6 +52,7 @@ export default {
 
   .map {
     height: 100%;
+    position: relative;
   }
 }
 </style>

@@ -14,13 +14,13 @@
     />
     <CircleMarker
       color="blue"
-      :coordinates="hoverPoint.coordinates"
-      @click="clickPoint(hoverPoint.index)"
+      :coordinates="hoverPointCoordinates"
+      @click="clickPoint()"
     />
     <CircleMarker
-      v-if="currentPointCoordinates"
+      v-if="selectedPointCoordinates"
       color="green"
-      :coordinates="currentPointCoordinates"
+      :coordinates="selectedPointCoordinates"
       :draggable="true"
       @dragstart="dragging = true"
       @dragend="dragging = false; handlePointDrag($event)"
@@ -36,9 +36,9 @@ import { mapGetters, mapActions } from 'vuex';
 
 import { distanceBetweenPoints } from '../utils';
 
-import { UPDATE_POINT, SET_CURRENT_POINT_INDEX } from '../store/actions';
+import { UPDATE_POINT, SET_SELECTED_POINT_INDEX, SET_HOVER_POINT_INDEX } from '../store/actions';
 import {
-  GET_COORDINATES, GET_CENTER_POINT, GET_GEO_JSON, GET_CURRENT_POINT_INDEX,
+  GET_COORDINATES, GET_CENTER_POINT, GET_GEO_JSON, GET_SELECTED_POINT_INDEX, GET_HOVER_POINT_INDEX,
 } from '../store/getters';
 
 import CircleMarker from './CircleMarker';
@@ -62,10 +62,6 @@ export default {
       },
       lastUpdate: 0,
       dragging: false,
-      hoverPoint: {
-        index: 0,
-        coordinates: [0, 0],
-      },
     };
   },
   computed: {
@@ -73,13 +69,17 @@ export default {
       coordinates: GET_COORDINATES,
       center: GET_CENTER_POINT,
       geoJson: GET_GEO_JSON,
-      currentPointIndex: GET_CURRENT_POINT_INDEX,
+      selectedPointIndex: GET_SELECTED_POINT_INDEX,
+      hoverPointIndex: GET_HOVER_POINT_INDEX,
     }),
-    currentPointCoordinates() {
-      if (this.currentPointIndex === -1) {
+    selectedPointCoordinates() {
+      if (this.selectedPointIndex === -1) {
         return null;
       }
-      return this.coordinates[this.currentPointIndex];
+      return this.coordinates[this.selectedPointIndex];
+    },
+    hoverPointCoordinates() {
+      return this.coordinates[this.hoverPointIndex];
     },
   },
   beforeDestroy() {
@@ -90,7 +90,8 @@ export default {
   methods: {
     ...mapActions({
       updatePoint: UPDATE_POINT,
-      setCurrentPointIndex: SET_CURRENT_POINT_INDEX,
+      setSelectedPointIndex: SET_SELECTED_POINT_INDEX,
+      setHoverPointIndex: SET_HOVER_POINT_INDEX,
     }),
     onMapLoad(event) {
       const asyncActions = event.component.actions;
@@ -105,11 +106,11 @@ export default {
         duration: 0,
       });
     },
-    clickPoint(event) {
-      this.setCurrentPointIndex(event);
+    clickPoint() {
+      this.setSelectedPointIndex(this.hoverPointIndex);
     },
     handleMouseMove(event) {
-      if (this.dragging) {
+      if (this.dragging || !this.coordinates) {
         return;
       }
 
@@ -124,7 +125,7 @@ export default {
         event.mapboxEvent.lngLat.lng,
         event.mapboxEvent.lngLat.lat,
       ];
-      const { index, point } = this.coordinates
+      const { index } = this.coordinates
         .map((p, i) => ({
           point: p,
           index: i,
@@ -135,13 +136,12 @@ export default {
         ))
         .shift();
 
-      this.hoverPoint.index = index;
-      this.hoverPoint.coordinates = point;
+      this.setHoverPointIndex(index);
     },
     handlePointDrag(event) {
       const cords = event.marker.getLngLat();
       this.updatePoint({
-        index: this.currentPointIndex,
+        index: this.selectedPointIndex,
         point: [
           cords.lng,
           cords.lat,

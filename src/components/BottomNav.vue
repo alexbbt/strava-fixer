@@ -54,26 +54,26 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
-import { UPDATE_POINT, SET_CURRENT_POINT_INDEX } from '../store/actions';
-import { GET_CURRENT_POINT, GET_CURRENT_POINT_INDEX } from '../store/getters';
+import { UPDATE_POINT, SET_SELECTED_POINT_INDEX } from '../store/actions';
+import { GET_SELECTED_POINT, GET_SELECTED_POINT_INDEX } from '../store/getters';
 
 export default {
   name: 'BottomNav',
   computed: {
     ...mapGetters({
-      currentPoint: GET_CURRENT_POINT,
-      currentPointIndex: GET_CURRENT_POINT_INDEX,
+      selectedPoint: GET_SELECTED_POINT,
+      selectedPointIndex: GET_SELECTED_POINT_INDEX,
     }),
   },
   methods: {
     ...mapActions({
       updatePointPrivate: UPDATE_POINT,
-      setCurrentPointIndex: SET_CURRENT_POINT_INDEX,
+      setSelectedPointIndex: SET_SELECTED_POINT_INDEX,
     }),
     updatePoint(key, value) {
-      console.log(JSON.stringify(this.currentPoint, null, 2));
+      console.log(JSON.stringify(this.selectedPoint, null, 2));
       this.updatePointPrivate({
-        index: this.currentPointIndex,
+        index: this.selectedPointIndex,
         key,
         value,
       });

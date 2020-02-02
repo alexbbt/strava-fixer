@@ -5,17 +5,19 @@ import { clone, getPoints } from '../utils';
 import {
   SET_ORIGINAL_FILE,
   SET_EDITABLE_FILE,
-  SET_CURRENT_POINT,
+  SET_SELECTED_POINT,
+  SET_HOVER_POINT,
 } from './mutations';
 import {
   GET_EDITABLE_FILE,
-  GET_CURRENT_POINT_INDEX,
+  GET_SELECTED_POINT_INDEX,
 } from './getters';
 
 export const PARSE_FILE = 'PARSE_FILE';
 export const UPDATE_POINT = 'UPDATE_POINT';
-export const SET_CURRENT_POINT_INDEX = 'SET_CURRENT_POINT_INDEX';
-export const DELETE_CURRENT_POINT = 'DELETE_CURRENT_POINT';
+export const SET_SELECTED_POINT_INDEX = 'SET_SELECTED_POINT_INDEX';
+export const SET_HOVER_POINT_INDEX = 'SET_HOVER_POINT_INDEX';
+export const DELETE_SELECTED_POINT = 'DELETE_SELECTED_POINT';
 
 const options = {
   ignoreAttributes: false,
@@ -37,28 +39,31 @@ const actions = {
     },
   ) {
     const editableJson = clone(getters[GET_EDITABLE_FILE]);
-    const currentPoint = getPoints(editableJson)[index];
+    const selectedPoint = getPoints(editableJson)[index];
 
     if (point) {
-      currentPoint['@_lon'] = `${point[0]}`;
-      currentPoint['@_lat'] = `${point[1]}`;
+      selectedPoint['@_lon'] = `${point[0]}`;
+      selectedPoint['@_lat'] = `${point[1]}`;
     } else {
-      currentPoint[key] = value;
+      selectedPoint[key] = value;
     }
 
     commit(SET_EDITABLE_FILE, editableJson);
   },
-  [SET_CURRENT_POINT_INDEX]({ commit }, index) {
-    commit(SET_CURRENT_POINT, index);
+  [SET_SELECTED_POINT_INDEX]({ commit }, index) {
+    commit(SET_SELECTED_POINT, index);
   },
-  [DELETE_CURRENT_POINT]({ commit, getters }) {
+  [SET_HOVER_POINT_INDEX]({ commit }, index) {
+    commit(SET_HOVER_POINT, index);
+  },
+  [DELETE_SELECTED_POINT]({ commit, getters }) {
     const editableJson = clone(getters[GET_EDITABLE_FILE]);
     const points = getPoints(editableJson);
-    const index = getters[GET_CURRENT_POINT_INDEX];
+    const index = getters[GET_SELECTED_POINT_INDEX];
 
     points.splice(index, 1);
 
-    commit(SET_CURRENT_POINT, Math.min(index, points.length - 1));
+    commit(SET_SELECTED_POINT, Math.min(index, points.length - 1));
     commit(SET_EDITABLE_FILE, editableJson);
   },
 };

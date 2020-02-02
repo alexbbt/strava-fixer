@@ -9,7 +9,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    currentPoint: -1,
+    selectedPoint: -1,
+    hoverPoint: 0,
     originalFile: '',
     editableFile: '',
   },

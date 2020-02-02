@@ -55,7 +55,7 @@
 <script>
 import { mapActions } from 'vuex';
 
-import { DELETE_CURRENT_POINT } from '../store/actions';
+import { DELETE_SELECTED_POINT } from '../store/actions';
 
 export default {
   name: 'ActionMenu',
@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      deletePoint: DELETE_CURRENT_POINT,
+      deletePoint: DELETE_SELECTED_POINT,
     }),
   },
 };
