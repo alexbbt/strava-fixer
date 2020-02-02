@@ -14,8 +14,8 @@ import { mapGetters } from 'vuex';
 
 import { GET_POINTS } from '../store/getters';
 
-import RouteMap from '../components/RouteMap.vue';
-import SideBottomNav from '../components/SideBottomNav.vue';
+import RouteMap from '../components/RouteMap';
+import SideBottomNav from '../components/SideBottomNav';
 
 export default {
   name: 'MapPage',

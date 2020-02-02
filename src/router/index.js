@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import HomePage from '../views/HomePage.vue';
+import HomePage from '../views/HomePage';
 
 Vue.use(VueRouter);
 
@@ -13,17 +13,17 @@ const routes = [
   {
     path: '/upload',
     name: 'upload',
-    component: () => import(/* webpackChunkName: "upload" */ '../views/UploadPage.vue'),
+    component: () => import(/* webpackChunkName: "upload" */ '../views/UploadPage'),
   },
   {
     path: '/map',
     name: 'map',
-    component: () => import(/* webpackChunkName: "map" */ '../views/MapPage.vue'),
+    component: () => import(/* webpackChunkName: "map" */ '../views/MapPage'),
   },
   {
     path: '/export',
     name: 'export',
-    component: () => import(/* webpackChunkName: "export" */ '../views/ExportPage.vue'),
+    component: () => import(/* webpackChunkName: "export" */ '../views/ExportPage'),
   },
 ];
 
