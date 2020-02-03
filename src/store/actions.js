@@ -41,6 +41,10 @@ const actions = {
     const editableJson = clone(getters[GET_EDITABLE_FILE]);
     const selectedPoint = getPoints(editableJson)[index];
 
+    if (!selectedPoint) {
+      return;
+    }
+
     if (point) {
       selectedPoint['@_lon'] = `${point[0]}`;
       selectedPoint['@_lat'] = `${point[1]}`;

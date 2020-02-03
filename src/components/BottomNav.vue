@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="selectedPoint">
     <p>Current Point</p>
     <div class="row">
       <div class="alex-one-half column">
@@ -7,7 +7,7 @@
         <input
           name="time"
           type="datetime"
-          :value="currentPoint['time']"
+          :value="selectedPoint['time']"
           @input="updatePoint('time', $event.target.value)"
         >
       </div>
@@ -16,7 +16,7 @@
         <input
           name="ele"
           type="text"
-          :value="currentPoint['ele']"
+          :value="selectedPoint['ele']"
           @input="updatePoint('ele', $event.target.value)"
         >
       </div>
@@ -27,7 +27,7 @@
         <input
           name="lat"
           type="text"
-          :value="currentPoint['@_lat']"
+          :value="selectedPoint['@_lat']"
           @input="updatePoint('@_lat', $event.target.value)"
         >
       </div>
@@ -36,7 +36,7 @@
         <input
           name="lon"
           type="text"
-          :value="currentPoint['@_lon']"
+          :value="selectedPoint['@_lon']"
           @input="updatePoint('@_lon', $event.target.value)"
         >
       </div>

@@ -2,7 +2,6 @@
   <div class="page">
     <div
       class="map"
-      :class="{ 'show-nav': showNav }"
     >
       <RouteMap />
       <ActionMenu />

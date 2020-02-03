@@ -3,8 +3,8 @@
     :coordinates="coordinates"
     anchor="center"
     :draggable="draggable"
-    @dragstart="$emit('dragstart')"
-    @dragend="$emit('dragend')"
+    @dragstart="$emit('dragstart', $event)"
+    @dragend="$emit('dragend', $event)"
     @click="$emit('click')"
   >
     <svg

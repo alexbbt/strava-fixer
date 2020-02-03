@@ -1,7 +1,14 @@
 import Parser from 'fast-xml-parser';
 import XMLFormatter from 'xml-formatter';
+import moment from 'moment';
+import Rainbow from 'rainbowvis.js';
+// import chroma from 'chroma-js';
 
-import { getPoints } from '../utils';
+import {
+  getPoints,
+  distanceBetweenPoints,
+  parseCoordinates,
+} from '../utils';
 
 export const GET_ORIGINAL_FILE = 'GET_ORIGINAL_FILE';
 export const GET_EDITABLE_FILE = 'GET_EDITABLE_FILE';
@@ -14,6 +21,8 @@ export const GET_POINTS = 'GET_POINTS';
 export const GET_COORDINATES = 'GET_COORDINATES';
 export const GET_CENTER_POINT = 'GET_CENTER_POINT';
 export const GET_GEO_JSON = 'GET_GEO_JSON';
+export const GET_GEO_JSON_LAYER = 'GET_GEO_JSON_LAYER';
+export const GET_COLOR_GRADIENT = 'GET_COLOR_GRADIENT';
 export const GET_XML_STRING = 'GET_XML_STRING';
 
 const getters = {
@@ -32,10 +41,7 @@ const getters = {
   [GET_COORDINATES]: (state) => {
     if (state.editableFile) {
       return getPoints(state.editableFile)
-        .map(point => point && [
-          parseFloat(point['@_lon']),
-          parseFloat(point['@_lat']),
-        ]);
+        .map(point => parseCoordinates(point));
     }
     return false;
   },
@@ -64,6 +70,7 @@ const getters = {
   },
   [GET_GEO_JSON]: state => ({
     type: 'geojson',
+    lineMetrics: true,
     data: {
       type: 'Feature',
       geometry: {
@@ -72,6 +79,122 @@ const getters = {
       },
     },
   }),
+  [GET_GEO_JSON_LAYER]: state => ({
+    id: 'route',
+    type: 'line',
+    source: 'route',
+    paint: {
+      'line-width': 4,
+      // 'line-gradient' must be specified using an expression
+      // with the special 'line-progress' property
+      'line-gradient': [
+        'interpolate',
+        ['linear'],
+        ['line-progress'],
+        ...getters[GET_COLOR_GRADIENT](state),
+      ],
+    },
+    layout: {
+      'line-cap': 'round',
+      'line-join': 'round',
+    },
+  }),
+  [GET_COLOR_GRADIENT]: (state) => {
+    const points = getters[GET_POINTS](state);
+
+    if (!points || points.length === 0) {
+      return [];
+    }
+
+    let totalDistance = 0;
+    let totalDuration = 0;
+    let minSpeed = 999;
+    let maxSpeed = 0;
+    let stats = [0];
+
+    for (let index = 0; index < points.length - 1; index += 1) {
+      const current = points[index];
+      const next = points[index + 1];
+      const distance = distanceBetweenPoints(
+        parseCoordinates(current),
+        parseCoordinates(next),
+      );
+
+      const duration = moment(next.time).diff(moment(current.time));
+      const speed = distance / duration * 10000000;
+
+      totalDistance += distance;
+      totalDuration += duration;
+      minSpeed = Math.min(minSpeed, speed);
+      maxSpeed = Math.max(maxSpeed, speed);
+
+      // Push the speed and current distance
+      stats.push(speed, totalDistance);
+    }
+
+    const averageSpeed = totalDistance / totalDuration * 10000000;
+    console.log(minSpeed, maxSpeed, averageSpeed);
+    // console.log(minSpeed - averageSpeed, maxSpeed - averageSpeed, averageSpeed);
+    // const minSpeedScaleFactor = 100 / (minSpeed - averageSpeed);
+    // const maxSpeedScaleFactor = 100 / (maxSpeed - averageSpeed);
+
+    // console.log(minSpeedScaleFactor, maxSpeedScaleFactor);
+
+    const gradient = new Rainbow();
+    gradient.setNumberRange(-1, 1);
+    gradient.setSpectrum('red', 'yellow', 'green');
+    // const scale = chroma
+    //   .scale(['red', 'yellow', 'green']).domain([minSpeed, averageSpeed, maxSpeed]);
+
+    const speeds = [];
+
+    const indiesToRemove = [];
+
+    stats = stats.map((stat, index) => {
+      if (index % 2 === 0) {
+        const distanceThroughRun = stat;
+
+        if (distanceThroughRun === stats[index - 2]) {
+          indiesToRemove.push(index);
+        }
+        // Calculate percentage
+        return (distanceThroughRun / totalDistance) * 100;
+      }
+      const speed = stat;
+      // Calculate color from speed
+      let speedFromAverage;
+      if (speed < averageSpeed) {
+        speedFromAverage = -1 * (speed - averageSpeed) / (minSpeed - averageSpeed);
+      } else {
+        speedFromAverage = (speed - averageSpeed) / (maxSpeed - averageSpeed);
+      }
+      // speedFromAverage **= 3;
+      speeds.push(speedFromAverage);
+      if (index < 10) {
+        console.log(
+          speed,
+          speedFromAverage,
+          `#${gradient.colourAt(speedFromAverage)}`,
+          // scale(speedFromAverage).hex(),
+        );
+      }
+      // return scale(speed).hex();
+      return `#${gradient.colourAt(speedFromAverage)}`;
+    });
+
+    indiesToRemove.reverse().forEach((index) => {
+      stats.splice(index, 2);
+    });
+
+    // console.log(Math.min(...speeds), Math.max(...speeds));
+
+    // remove `100%` from end;
+    stats.pop();
+
+    console.log(stats);
+
+    return stats;
+  },
   [GET_XML_STRING]: (state) => {
     // eslint-disable-next-line new-cap
     const parser = new Parser.j2xParser({

@@ -9,13 +9,16 @@
     <MglGeojsonLayer
       source-id="route"
       :source="geoJson"
-      layer-id="mapLayer"
+      layer-id="route"
       :layer="geojsonLayer"
     />
     <CircleMarker
       color="blue"
       :coordinates="hoverPointCoordinates"
+      :draggable="true"
       @click="clickPoint()"
+      @dragstart="dragging = true"
+      @dragend="(event) => { dragging = false; handlePointDrag(event, hoverPointIndex) }"
     />
     <CircleMarker
       v-if="selectedPointCoordinates"
@@ -23,7 +26,7 @@
       :coordinates="selectedPointCoordinates"
       :draggable="true"
       @dragstart="dragging = true"
-      @dragend="dragging = false; handlePointDrag($event)"
+      @dragend="(event) => { dragging = false; handlePointDrag(event, selectedPointIndex) }"
     />
   </MglMap>
 </template>
@@ -38,7 +41,12 @@ import { distanceBetweenPoints } from '../utils';
 
 import { UPDATE_POINT, SET_SELECTED_POINT_INDEX, SET_HOVER_POINT_INDEX } from '../store/actions';
 import {
-  GET_COORDINATES, GET_CENTER_POINT, GET_GEO_JSON, GET_SELECTED_POINT_INDEX, GET_HOVER_POINT_INDEX,
+  GET_COORDINATES,
+  GET_CENTER_POINT,
+  GET_GEO_JSON,
+  GET_GEO_JSON_LAYER,
+  GET_SELECTED_POINT_INDEX,
+  GET_HOVER_POINT_INDEX,
 } from '../store/getters';
 
 import CircleMarker from './CircleMarker';
@@ -56,10 +64,6 @@ export default {
       accessToken:
           'pk.eyJ1IjoiYWxleGJidCIsImEiOiJjaWZwdThvaWhhZDdsaXVseHVjMXluOGJvIn0.unltT8GfFsFml3Z6KrOMLA',
       style: 'mapbox://styles/mapbox/light-v10',
-      geojsonLayer: {
-        id: 'route',
-        type: 'line',
-      },
       lastUpdate: 0,
       dragging: false,
     };
@@ -69,6 +73,7 @@ export default {
       coordinates: GET_COORDINATES,
       center: GET_CENTER_POINT,
       geoJson: GET_GEO_JSON,
+      geojsonLayer: GET_GEO_JSON_LAYER,
       selectedPointIndex: GET_SELECTED_POINT_INDEX,
       hoverPointIndex: GET_HOVER_POINT_INDEX,
     }),
@@ -138,10 +143,10 @@ export default {
 
       this.setHoverPointIndex(index);
     },
-    handlePointDrag(event) {
+    handlePointDrag(event, index) {
       const cords = event.marker.getLngLat();
       this.updatePoint({
-        index: this.selectedPointIndex,
+        index,
         point: [
           cords.lng,
           cords.lat,

@@ -1,5 +1,8 @@
 <template>
-  <div class="hud">
+  <div
+    v-if="point"
+    class="hud"
+  >
     <p>{{ time }}</p>
   </div>
 </template>
