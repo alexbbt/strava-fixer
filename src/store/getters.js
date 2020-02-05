@@ -1,6 +1,7 @@
 import Parser from 'fast-xml-parser';
 import XMLFormatter from 'xml-formatter';
 import moment from 'moment';
+import Rainbow from 'rainbowvis.js';
 
 import {
   getPoints,
@@ -125,16 +126,33 @@ const getters = {
     const top = ((maxSpeed - averageSpeed) / 2) + averageSpeed;
     console.log(minSpeed, bottom, averageSpeed, top, maxSpeed, averageSpeed);
 
+    const gradient = new Rainbow();
+    gradient.setNumberRange(-1, 1);
+    gradient.setSpectrum('red', 'yellow', 'green');
+
     const features = [];
     let lastFeature;
 
     speeds.forEach((speed, index) => {
-      let color = 'green';
-      if (speed < bottom) {
-        color = 'red';
-      } else if (speed < top) {
-        color = 'yellow';
+      // Calculate color from speed
+      let speedFromAverage;
+      if (speed < averageSpeed) {
+        speedFromAverage = -1 * (speed - averageSpeed) / (minSpeed - averageSpeed);
+      } else {
+        speedFromAverage = (speed - averageSpeed) / (maxSpeed - averageSpeed);
       }
+      // speedFromAverage **= 3;
+      speeds.push(speedFromAverage);
+      if (index < 10) {
+        console.log(
+          speed,
+          speedFromAverage,
+          `#${gradient.colourAt(speedFromAverage)}`,
+          // scale(speedFromAverage).hex(),
+        );
+      }
+
+      const color = `#${gradient.colourAt(speedFromAverage)}`;
 
       if (!lastFeature || lastFeature.properties.color !== color) {
         if (lastFeature) {
