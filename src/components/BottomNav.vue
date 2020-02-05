@@ -71,7 +71,7 @@ export default {
       setSelectedPointIndex: SET_SELECTED_POINT_INDEX,
     }),
     updatePoint(key, value) {
-      console.log(JSON.stringify(this.selectedPoint, null, 2));
+      // console.log(JSON.stringify(this.selectedPoint, null, 2));
       this.updatePointPrivate({
         index: this.selectedPointIndex,
         key,

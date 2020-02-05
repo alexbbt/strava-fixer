@@ -80,7 +80,7 @@ const getters = {
     type: 'line',
     source: 'route',
     paint: {
-      'line-width': 3,
+      'line-width': 6,
       'line-color': ['get', 'color'],
     },
     layout: {
@@ -122,9 +122,6 @@ const getters = {
     }
 
     const averageSpeed = totalDistance / totalDuration * 10000000;
-    const bottom = ((averageSpeed - minSpeed) / 2) + minSpeed;
-    const top = ((maxSpeed - averageSpeed) / 2) + averageSpeed;
-    console.log(minSpeed, bottom, averageSpeed, top, maxSpeed, averageSpeed);
 
     const gradient = new Rainbow();
     gradient.setNumberRange(-1, 1);
@@ -141,27 +138,17 @@ const getters = {
       } else {
         speedFromAverage = (speed - averageSpeed) / (maxSpeed - averageSpeed);
       }
-      // speedFromAverage **= 3;
-      speeds.push(speedFromAverage);
-      if (index < 10) {
-        console.log(
-          speed,
-          speedFromAverage,
-          `#${gradient.colourAt(speedFromAverage)}`,
-          // scale(speedFromAverage).hex(),
-        );
-      }
 
       const color = `#${gradient.colourAt(speedFromAverage)}`;
 
       if (!lastFeature || lastFeature.properties.color !== color) {
         if (lastFeature) {
-          // Push current as last of old line
+          // Push current as last of old feature
           const cords = parseCoordinates(points[index]);
           lastFeature.geometry.coordinates.push(cords);
         }
 
-        // Make new line
+        // Make new feature
         lastFeature = {
           type: 'Feature',
           properties: {
@@ -175,13 +162,15 @@ const getters = {
         };
         features.push(lastFeature);
 
-        // Then push same point onto new line.
+        // Then push same point onto new feature.
       }
 
+      // Push point on to existing feature.
       const cords = parseCoordinates(points[index]);
       lastFeature.geometry.coordinates.push(cords);
     });
 
+    // Push last point onto end of last feature.
     const lastPoint = points[points.length - 1];
     const cords = parseCoordinates(lastPoint);
     lastFeature.geometry.coordinates.push(cords);
