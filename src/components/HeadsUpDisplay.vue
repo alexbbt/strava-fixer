@@ -4,7 +4,6 @@
     class="hud"
   >
     <p>{{ time }}</p>
-    <p>{{ color }}</p>
   </div>
 </template>
 
@@ -12,7 +11,7 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 
-import { GET_HOVER_POINT, GET_COLOR_GRADIENT, GET_HOVER_POINT_INDEX } from '../store/getters';
+import { GET_HOVER_POINT, GET_HOVER_POINT_INDEX } from '../store/getters';
 
 export default {
   name: 'HeadsUpDisplay',
@@ -20,13 +19,9 @@ export default {
     ...mapGetters({
       point: GET_HOVER_POINT,
       index: GET_HOVER_POINT_INDEX,
-      colors: GET_COLOR_GRADIENT,
     }),
     time() {
       return moment(this.point.time).format('LTS');
-    },
-    color() {
-      return this.colors[(this.index * 2) + 1];
     },
   },
 };

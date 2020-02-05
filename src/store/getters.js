@@ -20,7 +20,7 @@ export const GET_COORDINATES = 'GET_COORDINATES';
 export const GET_CENTER_POINT = 'GET_CENTER_POINT';
 export const GET_GEO_JSON = 'GET_GEO_JSON';
 export const GET_GEO_JSON_LAYER = 'GET_GEO_JSON_LAYER';
-export const GET_COLOR_GRADIENT = 'GET_COLOR_GRADIENT';
+export const GET_COLOR_FEATURES = 'GET_COLOR_FEATURES';
 export const GET_XML_STRING = 'GET_XML_STRING';
 
 const getters = {
@@ -70,34 +70,24 @@ const getters = {
     type: 'geojson',
     lineMetrics: true,
     data: {
-      type: 'Feature',
-      geometry: {
-        type: 'LineString',
-        coordinates: getters[GET_COORDINATES](state),
-      },
+      type: 'FeatureCollection',
+      features: getters[GET_COLOR_FEATURES](state),
     },
   }),
-  [GET_GEO_JSON_LAYER]: state => ({
+  [GET_GEO_JSON_LAYER]: () => ({
     id: 'route',
     type: 'line',
     source: 'route',
     paint: {
-      'line-width': 4,
-      // 'line-gradient' must be specified using an expression
-      // with the special 'line-progress' property
-      'line-gradient': [
-        'interpolate',
-        ['linear'],
-        ['line-progress'],
-        ...getters[GET_COLOR_GRADIENT](state),
-      ],
+      'line-width': 3,
+      'line-color': ['get', 'color'],
     },
     layout: {
       'line-cap': 'round',
       'line-join': 'round',
     },
   }),
-  [GET_COLOR_GRADIENT]: (state) => {
+  [GET_COLOR_FEATURES]: (state) => {
     const points = getters[GET_POINTS](state);
 
     if (!points || points.length === 0) {
@@ -108,7 +98,7 @@ const getters = {
     let totalDuration = 0;
     let minSpeed = 999;
     let maxSpeed = 0;
-    let stats = [0];
+    const speeds = [];
 
     for (let index = 0; index < points.length - 1; index += 1) {
       const current = points[index];
@@ -127,75 +117,58 @@ const getters = {
       maxSpeed = Math.max(maxSpeed, speed);
 
       // Push the speed and current distance
-      stats.push(speed, totalDistance);
+      speeds.push(speed);
     }
 
     const averageSpeed = totalDistance / totalDuration * 10000000;
     const bottom = ((averageSpeed - minSpeed) / 2) + minSpeed;
-    const top = ((maxSpeed - averageSpeed) / 2) + maxSpeed;
+    const top = ((maxSpeed - averageSpeed) / 2) + averageSpeed;
     console.log(minSpeed, bottom, averageSpeed, top, maxSpeed, averageSpeed);
 
-    // console.log(minSpeed - averageSpeed, maxSpeed - averageSpeed, averageSpeed);
-    // const minSpeedScaleFactor = 100 / (minSpeed - averageSpeed);
-    // const maxSpeedScaleFactor = 100 / (maxSpeed - averageSpeed);
+    const features = [];
+    let lastFeature;
 
-    // console.log(minSpeedScaleFactor, maxSpeedScaleFactor);
-
-    // const speeds = [];
-
-    const indiesToRemove = [];
-
-    stats = stats.map((stat, index) => {
-      if (index % 2 === 0) {
-        const distanceThroughRun = stat;
-
-        if (distanceThroughRun === stats[index - 2]) {
-          indiesToRemove.push(index);
-        }
-        // Calculate percentage
-        return (distanceThroughRun / totalDistance) * 100;
-      }
-      const speed = stat;
-      // Calculate color from speed
-      // let speedFromAverage;
-      // if (speed < averageSpeed) {
-      //   speedFromAverage = -1 * (speed - averageSpeed) / (minSpeed - averageSpeed);
-      // } else {
-      //   speedFromAverage = (speed - averageSpeed) / (maxSpeed - averageSpeed);
-      // }
-      // // speedFromAverage **= 3;
-      // speeds.push(speedFromAverage);
-      // if (index < 10) {
-      //   console.log(
-      //     speed,
-      //     speedFromAverage,
-      //     `#${gradient.colourAt(speedFromAverage)}`,
-      //     // scale(speedFromAverage).hex(),
-      //   );
-      // }
+    speeds.forEach((speed, index) => {
+      let color = 'green';
       if (speed < bottom) {
-        return 'red';
+        color = 'red';
+      } else if (speed < top) {
+        color = 'yellow';
       }
-      if (speed < top) {
-        return 'yellow';
+
+      if (!lastFeature || lastFeature.properties.color !== color) {
+        if (lastFeature) {
+          // Push current as last of old line
+          const cords = parseCoordinates(points[index]);
+          lastFeature.geometry.coordinates.push(cords);
+        }
+
+        // Make new line
+        lastFeature = {
+          type: 'Feature',
+          properties: {
+            color,
+          },
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+            ],
+          },
+        };
+        features.push(lastFeature);
+
+        // Then push same point onto new line.
       }
-      return 'green';
-      // return scale(speed).hex();
-      // return `#${gradient.colourAt(speedFromAverage)}`;
+
+      const cords = parseCoordinates(points[index]);
+      lastFeature.geometry.coordinates.push(cords);
     });
 
-    indiesToRemove.reverse().forEach((index) => {
-      stats.splice(index, 2);
-    });
+    const lastPoint = points[points.length - 1];
+    const cords = parseCoordinates(lastPoint);
+    lastFeature.geometry.coordinates.push(cords);
 
-    // console.log(Math.min(...speeds), Math.max(...speeds));
-
-    // remove `100%` from end;
-    stats.pop();
-
-    console.log(stats);
-
-    return stats;
+    return features;
   },
   [GET_XML_STRING]: (state) => {
     // eslint-disable-next-line new-cap
