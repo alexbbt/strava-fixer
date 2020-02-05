@@ -1,8 +1,6 @@
 import Parser from 'fast-xml-parser';
 import XMLFormatter from 'xml-formatter';
 import moment from 'moment';
-import Rainbow from 'rainbowvis.js';
-// import chroma from 'chroma-js';
 
 import {
   getPoints,
@@ -133,20 +131,17 @@ const getters = {
     }
 
     const averageSpeed = totalDistance / totalDuration * 10000000;
-    console.log(minSpeed, maxSpeed, averageSpeed);
+    const bottom = ((averageSpeed - minSpeed) / 2) + minSpeed;
+    const top = ((maxSpeed - averageSpeed) / 2) + maxSpeed;
+    console.log(minSpeed, bottom, averageSpeed, top, maxSpeed, averageSpeed);
+
     // console.log(minSpeed - averageSpeed, maxSpeed - averageSpeed, averageSpeed);
     // const minSpeedScaleFactor = 100 / (minSpeed - averageSpeed);
     // const maxSpeedScaleFactor = 100 / (maxSpeed - averageSpeed);
 
     // console.log(minSpeedScaleFactor, maxSpeedScaleFactor);
 
-    const gradient = new Rainbow();
-    gradient.setNumberRange(-1, 1);
-    gradient.setSpectrum('red', 'yellow', 'green');
-    // const scale = chroma
-    //   .scale(['red', 'yellow', 'green']).domain([minSpeed, averageSpeed, maxSpeed]);
-
-    const speeds = [];
+    // const speeds = [];
 
     const indiesToRemove = [];
 
@@ -162,24 +157,31 @@ const getters = {
       }
       const speed = stat;
       // Calculate color from speed
-      let speedFromAverage;
-      if (speed < averageSpeed) {
-        speedFromAverage = -1 * (speed - averageSpeed) / (minSpeed - averageSpeed);
-      } else {
-        speedFromAverage = (speed - averageSpeed) / (maxSpeed - averageSpeed);
+      // let speedFromAverage;
+      // if (speed < averageSpeed) {
+      //   speedFromAverage = -1 * (speed - averageSpeed) / (minSpeed - averageSpeed);
+      // } else {
+      //   speedFromAverage = (speed - averageSpeed) / (maxSpeed - averageSpeed);
+      // }
+      // // speedFromAverage **= 3;
+      // speeds.push(speedFromAverage);
+      // if (index < 10) {
+      //   console.log(
+      //     speed,
+      //     speedFromAverage,
+      //     `#${gradient.colourAt(speedFromAverage)}`,
+      //     // scale(speedFromAverage).hex(),
+      //   );
+      // }
+      if (speed < bottom) {
+        return 'red';
       }
-      // speedFromAverage **= 3;
-      speeds.push(speedFromAverage);
-      if (index < 10) {
-        console.log(
-          speed,
-          speedFromAverage,
-          `#${gradient.colourAt(speedFromAverage)}`,
-          // scale(speedFromAverage).hex(),
-        );
+      if (speed < top) {
+        return 'yellow';
       }
+      return 'green';
       // return scale(speed).hex();
-      return `#${gradient.colourAt(speedFromAverage)}`;
+      // return `#${gradient.colourAt(speedFromAverage)}`;
     });
 
     indiesToRemove.reverse().forEach((index) => {
