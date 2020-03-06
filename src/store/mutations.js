@@ -3,6 +3,7 @@ export const SET_EDITABLE_FILE = 'SET_EDITABLE_FILE';
 export const SET_SELECTED_POINT = 'SET_SELECTED_POINT';
 export const SET_HOVER_POINT = 'SET_HOVER_POINT';
 export const SET_SHOW_BOTTOM_SHEET = 'SET_SHOW_BOTTOM_SHEET';
+export const SET_USER_SETTINGS = 'SET_USER_SETTINGS';
 
 const mutations = {
   [SET_ORIGINAL_FILE](state, file) {
@@ -19,6 +20,9 @@ const mutations = {
   },
   [SET_SHOW_BOTTOM_SHEET](state, show) {
     state.showBottomSheet = show;
+  },
+  [SET_USER_SETTINGS](state, userSettings) {
+    state.userSettings = userSettings;
   },
 };
 

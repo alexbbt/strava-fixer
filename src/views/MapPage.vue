@@ -6,6 +6,7 @@
       <RouteMap />
       <ActionMenu />
       <HeadsUpDisplay />
+      <Settings />
     </div>
     <BottomNav />
   </div>
@@ -20,6 +21,7 @@ import { GET_POINTS } from '../store/getters';
 import ActionMenu from '../components/ActionMenu';
 import BottomNav from '../components/BottomNav';
 import HeadsUpDisplay from '../components/HeadsUpDisplay';
+import Settings from '../components/Settings';
 import RouteMap from '../components/RouteMap';
 
 export default {
@@ -28,6 +30,7 @@ export default {
     ActionMenu,
     BottomNav,
     HeadsUpDisplay,
+    Settings,
     RouteMap,
   },
   computed: {

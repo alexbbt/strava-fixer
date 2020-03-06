@@ -14,6 +14,7 @@ export default new Vuex.Store({
     originalFile: '',
     editableFile: '',
     showBottomSheet: false,
+    userSettings: {},
   },
   mutations,
   actions,

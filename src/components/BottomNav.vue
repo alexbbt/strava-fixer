@@ -17,6 +17,7 @@
       <v-container class="point-form">
         <v-row>
           <v-col
+            v-if="settings.showTime"
             cols="12"
             sm="6"
           >
@@ -32,6 +33,7 @@
             />
           </v-col>
           <v-col
+            v-if="settings.showElevation"
             cols="12"
             sm="6"
           >
@@ -45,9 +47,8 @@
               @blur="scrollTop"
             />
           </v-col>
-        </v-row>
-        <v-row>
           <v-col
+            v-if="settings.showLatitude"
             cols="12"
             sm="6"
           >
@@ -62,6 +63,7 @@
             />
           </v-col>
           <v-col
+            v-if="settings.showLongitude"
             cols="12"
             sm="6"
           >
@@ -75,10 +77,8 @@
               @blur="scrollTop"
             />
           </v-col>
-        </v-row>
-        <v-row v-if="hasExtra">
           <v-col
-            v-for="extra in extras"
+            v-for="extra in filteredExtras"
             :key="extra.name"
             cols="12"
             sm="6"
@@ -102,17 +102,15 @@ import { mapGetters, mapActions } from 'vuex';
 import moment from 'moment';
 
 import { HIDE_BOTTOM_SHEET, UPDATE_POINT } from '../store/actions';
-import { GET_SHOW_BOTTOM_SHEET, GET_SELECTED_POINT, GET_SELECTED_POINT_INDEX } from '../store/getters';
+import {
+  GET_SHOW_BOTTOM_SHEET,
+  GET_SELECTED_POINT,
+  GET_SELECTED_POINT_INDEX,
+  GET_SETTINGS,
+  GET_SELECTED_POINT_EXTRAS,
+} from '../store/getters';
 
 const TIME_FORMAT = 'HH:mm:ss';
-
-const NAME_MAP = {
-  hr: 'Heart Rate',
-};
-
-const ICON_MAP = {
-  hr: 'mdi-heart-pulse',
-};
 
 export default {
   name: 'BottomNav',
@@ -121,27 +119,15 @@ export default {
       selectedPoint: GET_SELECTED_POINT,
       selectedPointIndex: GET_SELECTED_POINT_INDEX,
       show: GET_SHOW_BOTTOM_SHEET,
+      settings: GET_SETTINGS,
+      selectedPointExtras: GET_SELECTED_POINT_EXTRAS,
     }),
     timestamp() {
       return moment(this.selectedPoint.time).format(TIME_FORMAT);
     },
-    hasExtra() {
-      return this.selectedPoint && this.selectedPoint.extensions;
-    },
-    extras() {
-      return Object.values(this.selectedPoint.extensions)
-        .reduce((extras, extension) => {
-          Object.entries(extension)
-            .forEach(([key, value]) => {
-              const name = key.replace('gpxtpx:', '');
-              extras.push({
-                name: NAME_MAP[name] || name,
-                icon: ICON_MAP[name],
-                value,
-              });
-            });
-          return extras;
-        }, []);
+    filteredExtras() {
+      return this.selectedPointExtras
+        .filter(extra => this.settings[extra.showKey] == null || this.settings[extra.showKey]);
     },
   },
   watch: {

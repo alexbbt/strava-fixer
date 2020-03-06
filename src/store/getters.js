@@ -7,7 +7,49 @@ import {
   getPoints,
   distanceBetweenPoints,
   parseCoordinates,
+  clone,
 } from '../utils';
+
+const DEFAULT_SETTINGS = {
+  showTime: true,
+  showElevation: true,
+  showLatitude: true,
+  showLongitude: true,
+};
+
+const NAME_MAP = {
+  hr: 'Heart Rate',
+};
+
+const ICON_MAP = {
+  hr: 'mdi-heart-pulse',
+};
+
+function GET_EXTRAS(point) {
+  if (!point || !point.extensions) {
+    return [];
+  }
+
+  return Object.values(point.extensions)
+    .reduce((extras, extension) => {
+      Object.entries(extension)
+        .forEach(([key, value]) => {
+          const name = key.replace('gpxtpx:', '');
+          const showKey = `show ${NAME_MAP[name] || name}`
+            .replace(/\s(.)/g, a => a.toUpperCase())
+            .replace(/\s/g, '')
+            .replace(/^(.)/, b => b.toLowerCase());
+
+          extras.push({
+            showKey,
+            name: NAME_MAP[name] || name,
+            icon: ICON_MAP[name],
+            value,
+          });
+        });
+      return extras;
+    }, []);
+}
 
 export const GET_ORIGINAL_FILE = 'GET_ORIGINAL_FILE';
 export const GET_EDITABLE_FILE = 'GET_EDITABLE_FILE';
@@ -24,6 +66,9 @@ export const GET_GEO_JSON = 'GET_GEO_JSON';
 export const GET_GEO_JSON_LAYER = 'GET_GEO_JSON_LAYER';
 export const GET_COLOR_FEATURES = 'GET_COLOR_FEATURES';
 export const GET_XML_STRING = 'GET_XML_STRING';
+export const GET_USER_SETTINGS = 'GET_USER_SETTINGS';
+export const GET_SETTINGS = 'GET_SETTINGS';
+export const GET_SELECTED_POINT_EXTRAS = 'GET_SELECTED_POINT_EXTRAS';
 
 const getters = {
   [GET_ORIGINAL_FILE]: state => state.originalFile,
@@ -190,6 +235,22 @@ const getters = {
       collapseContent: true,
       indentation: ' ',
     });
+  },
+  [GET_USER_SETTINGS]: state => clone(state.userSettings),
+  [GET_SETTINGS]: state => ({
+    ...DEFAULT_SETTINGS,
+    ...GET_EXTRAS(getters[GET_POINTS](state)[0])
+      .reduce((map, current) => {
+        // eslint-disable-next-line no-param-reassign
+        map[current.showKey] = true;
+        return map;
+      }, {}),
+    ...clone(state.userSettings),
+  }),
+  [GET_SELECTED_POINT_EXTRAS]: (state) => {
+    const point = getters[GET_POINTS](state)[state.selectedPoint];
+
+    return GET_EXTRAS(point);
   },
 };
 

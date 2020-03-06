@@ -8,6 +8,7 @@ import {
   SET_SELECTED_POINT,
   SET_HOVER_POINT,
   SET_SHOW_BOTTOM_SHEET,
+  SET_USER_SETTINGS,
 } from './mutations';
 import {
   GET_EDITABLE_FILE,
@@ -21,6 +22,8 @@ export const SET_HOVER_POINT_INDEX = 'SET_HOVER_POINT_INDEX';
 export const DELETE_SELECTED_POINT = 'DELETE_SELECTED_POINT';
 export const SHOW_BOTTOM_SHEET = 'SHOW_BOTTOM_SHEET';
 export const HIDE_BOTTOM_SHEET = 'HIDE_BOTTOM_SHEET';
+export const PARSE_USER_SETTINGS = 'PARSE_USER_SETTINGS';
+export const SAVE_USER_SETTINGS = 'SAVE_USER_SETTINGS';
 
 const options = {
   ignoreAttributes: false,
@@ -78,6 +81,14 @@ const actions = {
   },
   [HIDE_BOTTOM_SHEET]({ commit }) {
     commit(SET_SHOW_BOTTOM_SHEET, false);
+  },
+  [PARSE_USER_SETTINGS]({ commit }) {
+    const settings = window.localStorage.getItem('user-settings');
+    commit(SET_USER_SETTINGS, settings ? JSON.parse(settings) : {});
+  },
+  [SAVE_USER_SETTINGS]({ commit }, settings) {
+    window.localStorage.setItem('user-settings', JSON.stringify(settings));
+    commit(SET_USER_SETTINGS, settings);
   },
 };
 
