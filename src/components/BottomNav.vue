@@ -10,7 +10,7 @@
         class="float-right"
         color="primary"
         depressed
-        @click="hide"
+        @click="hide(); scrollTop()"
       >
         close
       </v-btn>
@@ -28,6 +28,7 @@
               step="1"
               prepend-icon="mdi-clock-outline"
               @input="updatePoint('time', getUpdatedTime($event))"
+              @blur="scrollTop"
             />
           </v-col>
           <v-col
@@ -41,6 +42,7 @@
               label="Elevation"
               prepend-icon="mdi-elevation-rise"
               @input="updatePoint('ele', $event)"
+              @blur="scrollTop"
             />
           </v-col>
         </v-row>
@@ -56,6 +58,7 @@
               label="Latitude"
               prepend-icon="mdi-latitude"
               @input="updatePoint('@_lat', $event)"
+              @blur="scrollTop"
             />
           </v-col>
           <v-col
@@ -69,6 +72,7 @@
               label="Longitude"
               prepend-icon="mdi-longitude"
               @input="updatePoint('@_lon', $event)"
+              @blur="scrollTop"
             />
           </v-col>
         </v-row>
@@ -161,6 +165,12 @@ export default {
         index: this.selectedPointIndex,
         key,
         value,
+      });
+    },
+    scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'auto',
       });
     },
   },
