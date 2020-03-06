@@ -11,6 +11,7 @@ import {
 
 export const GET_ORIGINAL_FILE = 'GET_ORIGINAL_FILE';
 export const GET_EDITABLE_FILE = 'GET_EDITABLE_FILE';
+export const GET_SHOW_BOTTOM_SHEET = 'GET_SHOW_BOTTOM_SHEET';
 export const GET_ACTIVITY_NAME = 'GET_ACTIVITY_NAME';
 export const GET_SELECTED_POINT = 'GET_SELECTED_POINT';
 export const GET_SELECTED_POINT_INDEX = 'GET_SELECTED_POINT_INDEX';
@@ -27,6 +28,7 @@ export const GET_XML_STRING = 'GET_XML_STRING';
 const getters = {
   [GET_ORIGINAL_FILE]: state => state.originalFile,
   [GET_EDITABLE_FILE]: state => state.editableFile,
+  [GET_SHOW_BOTTOM_SHEET]: state => state.showBottomSheet,
   [GET_SELECTED_POINT_INDEX]: state => state.selectedPoint,
   [GET_SELECTED_POINT]: state => getters[GET_POINTS](state)[state.selectedPoint],
   [GET_HOVER_POINT_INDEX]: state => state.hoverPoint,

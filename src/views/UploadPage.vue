@@ -4,6 +4,7 @@
     <input
       ref="file"
       type="file"
+      accept=".gpx"
       @change="uploadFile"
     >
   </div>

@@ -13,6 +13,7 @@ export default new Vuex.Store({
     hoverPoint: 0,
     originalFile: '',
     editableFile: '',
+    showBottomSheet: false,
   },
   mutations,
   actions,

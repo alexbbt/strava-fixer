@@ -7,6 +7,7 @@ import {
   SET_EDITABLE_FILE,
   SET_SELECTED_POINT,
   SET_HOVER_POINT,
+  SET_SHOW_BOTTOM_SHEET,
 } from './mutations';
 import {
   GET_EDITABLE_FILE,
@@ -18,6 +19,8 @@ export const UPDATE_POINT = 'UPDATE_POINT';
 export const SET_SELECTED_POINT_INDEX = 'SET_SELECTED_POINT_INDEX';
 export const SET_HOVER_POINT_INDEX = 'SET_HOVER_POINT_INDEX';
 export const DELETE_SELECTED_POINT = 'DELETE_SELECTED_POINT';
+export const SHOW_BOTTOM_SHEET = 'SHOW_BOTTOM_SHEET';
+export const HIDE_BOTTOM_SHEET = 'HIDE_BOTTOM_SHEET';
 
 const options = {
   ignoreAttributes: false,
@@ -69,6 +72,12 @@ const actions = {
 
     commit(SET_SELECTED_POINT, Math.min(index, points.length - 1));
     commit(SET_EDITABLE_FILE, editableJson);
+  },
+  [SHOW_BOTTOM_SHEET]({ commit }) {
+    commit(SET_SHOW_BOTTOM_SHEET, true);
+  },
+  [HIDE_BOTTOM_SHEET]({ commit }) {
+    commit(SET_SHOW_BOTTOM_SHEET, false);
   },
 };
 

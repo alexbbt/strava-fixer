@@ -1,11 +1,14 @@
 <template>
   <v-speed-dial
+    v-if="selectedPoint"
     v-model="fab"
     :absolute="true"
     :bottom="true"
     :right="true"
     direction="top"
     transition="slide-y-reverse-transition"
+    class="action-menu"
+    :class="{ 'mobile-action-menu': needsMobilePadding }"
   >
     <template v-slot:activator>
       <v-btn
@@ -36,7 +39,7 @@
       dark
       small
       color="green"
-      @click.stop="$emit('edit')"
+      @click.stop="showBottomSheet(); fab = false"
     >
       <v-icon>mdi-pencil</v-icon>
     </v-btn>
@@ -53,9 +56,10 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
-import { DELETE_SELECTED_POINT } from '../store/actions';
+import { DELETE_SELECTED_POINT, SHOW_BOTTOM_SHEET } from '../store/actions';
+import { GET_SELECTED_POINT } from '../store/getters';
 
 export default {
   name: 'ActionMenu',
@@ -64,10 +68,27 @@ export default {
       fab: false,
     };
   },
+  computed: {
+    ...mapGetters({
+      selectedPoint: GET_SELECTED_POINT,
+    }),
+    needsMobilePadding() {
+      return window.screen.availHeight === window.screen.height;
+    },
+  },
   methods: {
     ...mapActions({
       deletePoint: DELETE_SELECTED_POINT,
+      showBottomSheet: SHOW_BOTTOM_SHEET,
     }),
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@media (max-width: 599px) {
+  .mobile-action-menu {
+    margin-bottom: 115px;
+  }
+}
+</style>
