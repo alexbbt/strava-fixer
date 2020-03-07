@@ -1,39 +1,32 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/upload">Upload</router-link> |
-      <router-link to="/export">Export</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-content>
+      <router-view />
+    </v-content>
+  </v-app>
 </template>
 
+<script>
+import { mapActions } from 'vuex';
+import { PARSE_USER_SETTINGS } from './store/actions';
+
+export default {
+  name: 'App',
+  mounted() {
+    this.parseSettings();
+  },
+  methods: {
+    ...mapActions({
+      parseSettings: PARSE_USER_SETTINGS,
+    }),
+  },
+};
+</script>
+
 <style lang="scss">
-html, body, #app {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-}
-
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-  text-align: center;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+body {
+  overflow: hidden;
+  touch-action: none;
+  -ms-touch-action: none;
 }
 </style>

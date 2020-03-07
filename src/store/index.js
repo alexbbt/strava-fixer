@@ -9,8 +9,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    selectedPoint: -1,
+    hoverPoint: 0,
     originalFile: '',
     editableFile: '',
+    showBottomSheet: false,
+    userSettings: {},
   },
   mutations,
   actions,

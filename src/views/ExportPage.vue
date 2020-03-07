@@ -2,8 +2,23 @@
   <div class="upload">
     <h1>Export Modified File</h1>
     <p>Changed Points {{ diff }} </p>
-    <button @click="back">Go Back</button>
-    <button @click="exportFile">Export</button>
+    <v-btn
+      outlined
+      rounded
+      color="primary"
+      class="button"
+      @click="back"
+    >
+      Go Back
+    </v-btn>
+    <v-btn
+      rounded
+      color="primary"
+      class="button"
+      @click="exportFile"
+    >
+      Export
+    </v-btn>
   </div>
 </template>
 
@@ -16,12 +31,7 @@ import {
 import { getPoints } from '../utils';
 
 export default {
-  name: 'export',
-  mounted() {
-    if (!this.original) {
-      this.$router.push('upload');
-    }
-  },
+  name: 'ExportPage',
   computed: {
     ...mapGetters({
       original: GET_ORIGINAL_FILE,
@@ -48,6 +58,11 @@ export default {
       return changedValues.length;
     },
   },
+  mounted() {
+    if (!this.original) {
+      this.$router.push('upload');
+    }
+  },
   methods: {
     back() {
       this.$router.back();
@@ -71,5 +86,9 @@ export default {
 <style lang="scss" scoped>
   .upload {
     text-align: center;
+
+    .button {
+      margin: 2px;
+    }
   }
 </style>
