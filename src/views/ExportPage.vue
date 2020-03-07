@@ -24,11 +24,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import diff from 'diff-arrays-of-objects';
 
 import {
   GET_EDITABLE_FILE, GET_ORIGINAL_FILE, GET_ACTIVITY_NAME, GET_XML_STRING,
 } from '../store/getters';
-import { getPoints } from '../utils';
+import { getPoints, clone } from '../utils';
 
 export default {
   name: 'ExportPage',
@@ -44,18 +45,12 @@ export default {
         return null;
       }
 
-      const originalPoints = getPoints(this.original);
-      const changedValues = getPoints(this.modified).filter((point, index) => {
-        const og = originalPoints[index];
-        if (og['@_lng'] !== point['@_lng']) {
-          return true;
-        }
-        if (og['@_lat'] !== point['@_lat']) {
-          return true;
-        }
-        return false;
-      });
-      return changedValues.length;
+      const originalPoints = clone(getPoints(this.original));
+      const changedValues = clone(getPoints(this.modified));
+
+      const changes = diff(originalPoints, changedValues, 'time');
+
+      return originalPoints.length - changes.same.length;
     },
   },
   mounted() {
