@@ -56,8 +56,8 @@ export default {
     padding: 25px;
 
     .file {
-      margin-top: 50px;
-      margin-bottom: 25px;
+      margin: 50px auto 25px;
+      max-width: 600px;
     }
 
     img {
