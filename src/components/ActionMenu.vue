@@ -25,7 +25,7 @@
         </v-icon>
       </v-btn>
     </template>
-    <v-btn
+    <!-- <v-btn
       fab
       dark
       small
@@ -33,7 +33,7 @@
       @click.stop="$emit('line')"
     >
       <v-icon>mdi-chart-timeline-variant</v-icon>
-    </v-btn>
+    </v-btn> -->
     <v-btn
       fab
       dark
