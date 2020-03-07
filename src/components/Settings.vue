@@ -81,13 +81,3 @@ export default {
   },
 };
 </script>
-
-
-<style lang="scss" scoped>
-.settings {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 0px;
-}
-</style>

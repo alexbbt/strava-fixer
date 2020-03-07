@@ -5,32 +5,28 @@
     >
       <RouteMap />
       <ActionMenu />
-      <HeadsUpDisplay />
-      <Settings />
     </div>
+    <TopNav />
     <BottomNav />
   </div>
 </template>
 
 <script>
-// make this a drop area
 import { mapGetters } from 'vuex';
 
 import { GET_POINTS } from '../store/getters';
 
 import ActionMenu from '../components/ActionMenu';
+import TopNav from '../components/TopNav';
 import BottomNav from '../components/BottomNav';
-import HeadsUpDisplay from '../components/HeadsUpDisplay';
-import Settings from '../components/Settings';
 import RouteMap from '../components/RouteMap';
 
 export default {
   name: 'MapPage',
   components: {
     ActionMenu,
+    TopNav,
     BottomNav,
-    HeadsUpDisplay,
-    Settings,
     RouteMap,
   },
   computed: {

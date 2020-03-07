@@ -2,12 +2,23 @@
   <div class="upload">
     <h1>Export Modified File</h1>
     <p>Changed Points {{ diff }} </p>
-    <button @click="back">
+    <v-btn
+      outlined
+      rounded
+      color="primary"
+      class="button"
+      @click="back"
+    >
       Go Back
-    </button>
-    <button @click="exportFile">
+    </v-btn>
+    <v-btn
+      rounded
+      color="primary"
+      class="button"
+      @click="exportFile"
+    >
       Export
-    </button>
+    </v-btn>
   </div>
 </template>
 
@@ -75,5 +86,9 @@ export default {
 <style lang="scss" scoped>
   .upload {
     text-align: center;
+
+    .button {
+      margin: 2px;
+    }
   }
 </style>

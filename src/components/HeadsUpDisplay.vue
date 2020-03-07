@@ -29,9 +29,6 @@ export default {
 
 <style lang="scss" scoped>
 .hud {
-  position: absolute;
-  top: 0;
-  left: 0;
   margin: 5px;
   background: white;
   padding: 5px;
