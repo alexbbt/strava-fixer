@@ -1,18 +1,24 @@
 <template>
   <div class="upload">
     <h1>Upload your Strava GPX File</h1>
-    <input
-      ref="file"
-      type="file"
+
+    <v-file-input
       accept=".gpx"
+      label="GPX File"
+      placeholder="Select your Strava GPX File"
+      class="file"
+      prepend-icon=""
+      outlined
       @change="uploadFile"
-    >
+    />
+
+    <img src="../assets/Exporting your Data and Bulk Export – Eng.png">
   </div>
 </template>
 
 <script>
-// make this a drop area
 import { mapActions } from 'vuex';
+
 import { PARSE_FILE } from '../store/actions';
 
 export default {
@@ -21,7 +27,7 @@ export default {
     ...mapActions({
       parseFile: PARSE_FILE,
     }),
-    uploadFile(event) {
+    uploadFile(file) {
       if (!window.FileReader) return; // Browser is not compatible
 
       const reader = new FileReader();
@@ -38,7 +44,7 @@ export default {
         this.$router.push('map');
       };
 
-      reader.readAsText(event.target.files[0]);
+      reader.readAsText(file);
     },
   },
 };
@@ -47,5 +53,16 @@ export default {
 <style lang="scss" scoped>
   .upload {
     text-align: center;
+    padding: 25px;
+
+    .file {
+      margin-top: 50px;
+      margin-bottom: 25px;
+    }
+
+    img {
+      width: 100%;
+      max-width: 600px;
+    }
   }
 </style>
