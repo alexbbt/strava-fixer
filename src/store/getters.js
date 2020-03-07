@@ -127,12 +127,11 @@ const getters = {
     type: 'line',
     source: 'route',
     paint: {
-      'line-width': 6,
+      'line-width': 4,
       'line-color': ['get', 'color'],
     },
     layout: {
       'line-cap': 'round',
-      'line-join': 'round',
     },
   }),
   [GET_COLOR_FEATURES]: (state) => {
