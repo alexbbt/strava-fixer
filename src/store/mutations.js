@@ -5,6 +5,14 @@ export const SET_HOVER_POINT = 'SET_HOVER_POINT';
 export const SET_SHOW_BOTTOM_SHEET = 'SET_SHOW_BOTTOM_SHEET';
 export const SET_USER_SETTINGS = 'SET_USER_SETTINGS';
 
+export const MUTATIONS_TO_IGNORE = [
+  SET_ORIGINAL_FILE,
+  SET_SELECTED_POINT,
+  SET_HOVER_POINT,
+  SET_SHOW_BOTTOM_SHEET,
+  SET_USER_SETTINGS,
+];
+
 const mutations = {
   [SET_ORIGINAL_FILE](state, file) {
     state.originalFile = file;
