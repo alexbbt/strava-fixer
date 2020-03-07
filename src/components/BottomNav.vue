@@ -130,11 +130,6 @@ export default {
         .filter(extra => this.settings[extra.showKey] == null || this.settings[extra.showKey]);
     },
   },
-  watch: {
-    selectedPoint() {
-      console.log(this.hasExtra && JSON.stringify(this.extras));
-    },
-  },
   methods: {
     ...mapActions({
       hide: HIDE_BOTTOM_SHEET,
