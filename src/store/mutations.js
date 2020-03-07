@@ -14,6 +14,9 @@ export const MUTATIONS_TO_IGNORE = [
 ];
 
 const mutations = {
+  emptyState(state) {
+    state.editableFile = state.originalFile;
+  },
   [SET_ORIGINAL_FILE](state, file) {
     state.originalFile = file;
   },

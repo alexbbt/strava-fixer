@@ -7,6 +7,24 @@
       <v-btn
         icon
         large
+        color="black"
+        :disabled="canUndo === 0"
+        @click="undo"
+      >
+        <v-icon>mdi-undo</v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        large
+        color="black"
+        :disabled="canRedo === 0"
+        @click="redo"
+      >
+        <v-icon>mdi-redo</v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        large
         to="/export"
         color="black"
       >
