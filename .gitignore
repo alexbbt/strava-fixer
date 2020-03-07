@@ -115,3 +115,6 @@ node_modules
 *.njsproj
 *.sln
 *.sw?
+
+# Build Folder
+dist
