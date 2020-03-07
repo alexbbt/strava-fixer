@@ -87,6 +87,7 @@ export default {
 
 <style lang="scss" scoped>
 @media (max-width: 599px) {
+
   .mobile-action-menu {
     margin-bottom: 115px;
   }

@@ -32,17 +32,19 @@ export default {
 
 <style lang="scss" scoped>
 .top-nav {
-    .left {
-        position: absolute;
-        top: 0;
-        left: 0;
-        margin: 0px;
-    }
-    .right {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin: 0px;
-    }
+
+  .left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0px;
+  }
+
+  .right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0px;
+  }
 }
 </style>
