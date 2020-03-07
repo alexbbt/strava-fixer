@@ -5,6 +5,7 @@
     <v-btn
       to="/upload"
       color="primary"
+      class="button"
     >
       Get Started
     </v-btn>
@@ -22,6 +23,11 @@ export default {
 <style lang="scss" scoped>
   .home {
     text-align: center;
+    padding: 25px;
+
+    .button {
+      margin: 25px;
+    }
 
     img {
       width: 100%;
