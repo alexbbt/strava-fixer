@@ -32,6 +32,13 @@ const options = {
 const actions = {
   [PARSE_FILE]({ commit }, file) {
     const tObj = Parser.getTraversalObj(file, options);
+    if (tObj.tagname !== '!xml') {
+      throw new Error('Invalid File Format: File is not an XML file');
+    }
+    if (!tObj.child.gpx) {
+      throw new Error('Invalid File Format: File is not a valid GPX file');
+    }
+
     const originalJson = Parser.convertToJson(tObj, options);
     const editableJson = Parser.convertToJson(tObj, options);
 
