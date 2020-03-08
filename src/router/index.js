@@ -2,6 +2,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import HomePage from '../views/HomePage';
 
+import store from '../store';
+import { GET_EDITABLE_FILE } from '../store/getters';
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -19,6 +22,13 @@ const routes = [
     path: '/map',
     name: 'map',
     component: () => import(/* webpackChunkName: "map" */ '../views/MapPage'),
+    beforeEnter: (to, from, next) => {
+      if (store.getters[GET_EDITABLE_FILE]) {
+        next();
+      } else {
+        next('/upload');
+      }
+    },
   },
   {
     path: '/export',

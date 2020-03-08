@@ -35,9 +35,6 @@ export default {
     }),
   },
   mounted() {
-    if (!this.points) {
-      this.$router.push('upload');
-    }
     window.points = this.points;
   },
 };

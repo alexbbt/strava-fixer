@@ -13,6 +13,7 @@ import {
 import {
   GET_EDITABLE_FILE,
   GET_SELECTED_POINT_INDEX,
+  GET_ORIGINAL_FILE,
 } from './getters';
 
 export const PARSE_FILE = 'PARSE_FILE';
@@ -24,6 +25,8 @@ export const SHOW_BOTTOM_SHEET = 'SHOW_BOTTOM_SHEET';
 export const HIDE_BOTTOM_SHEET = 'HIDE_BOTTOM_SHEET';
 export const PARSE_USER_SETTINGS = 'PARSE_USER_SETTINGS';
 export const SAVE_USER_SETTINGS = 'SAVE_USER_SETTINGS';
+export const RESET_FILE = 'RESET_FILE';
+export const CLOSE_FILE = 'CLOSE_FILE';
 
 const options = {
   ignoreAttributes: false,
@@ -96,6 +99,13 @@ const actions = {
   [SAVE_USER_SETTINGS]({ commit }, settings) {
     window.localStorage.setItem('user-settings', JSON.stringify(settings));
     commit(SET_USER_SETTINGS, settings);
+  },
+  [RESET_FILE]({ commit, getters }) {
+    commit(SET_EDITABLE_FILE, getters[GET_ORIGINAL_FILE]);
+  },
+  [CLOSE_FILE]({ commit }) {
+    commit(SET_EDITABLE_FILE, null);
+    commit(SET_ORIGINAL_FILE, null);
   },
 };
 
