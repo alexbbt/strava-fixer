@@ -15,19 +15,14 @@
       rounded
       color="primary"
       class="button"
-      @click="$router.back"
+      @click="back"
     >
       Go Back
     </v-btn>
-    <v-btn
-      rounded
-      color="primary"
-      class="button"
+    <ExportFileModal
       :disabled="!formIsValid"
-      @click="exportFile"
-    >
-      Export
-    </v-btn>
+      @submit="exportFile"
+    />
   </div>
 </template>
 
@@ -36,11 +31,11 @@ import { mapGetters } from 'vuex';
 import diff from 'diff-arrays-of-objects';
 
 import MetaDataForm from '../components/MetaDataForm';
+import ExportFileModal from '../components/ExportFileModal';
 
 import {
   GET_EDITABLE_FILE,
   GET_TIME_SHIFTED_ORIGINAL_FILE,
-  GET_ACTIVITY_NAME,
   GET_XML_STRING,
 } from '../store/getters';
 import { getPoints, clone } from '../utils';
@@ -49,6 +44,7 @@ export default {
   name: 'ExportPage',
   components: {
     MetaDataForm,
+    ExportFileModal,
   },
   data() {
     return {
@@ -59,7 +55,6 @@ export default {
     ...mapGetters({
       original: GET_TIME_SHIFTED_ORIGINAL_FILE,
       modified: GET_EDITABLE_FILE,
-      activityName: GET_ACTIVITY_NAME,
       xml: GET_XML_STRING,
     }),
     diff() {
@@ -94,10 +89,13 @@ export default {
     }
   },
   methods: {
-    exportFile() {
+    back() {
+      this.$router.back();
+    },
+    exportFile(fileName) {
       const element = document.createElement('a');
       element.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(this.xml)}`);
-      element.setAttribute('download', `${this.activityName}.gpx`);
+      element.setAttribute('download', fileName);
 
       element.style.display = 'none';
       document.body.appendChild(element);

@@ -50,9 +50,6 @@ export function shiftTimeStamps(gpxFile, difference) {
   const clonedGpxFile = clone(gpxFile);
 
   function shiftTime(timestamp) {
-    if (timestamp.length > '2020-01-25T15:06:53Z'.length) {
-      console.log(timestamp);
-    }
     return moment(timestamp)
       .add(difference, 'seconds')
       .utc()

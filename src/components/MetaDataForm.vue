@@ -65,9 +65,6 @@ export default {
       updateActivityName: UPDATE_ACTIVITY_NAME,
       shiftTime: SHIFT_TIME,
     }),
-    log(...args) {
-      console.log(...args);
-    },
   },
 };
 </script>

@@ -92,7 +92,8 @@ const getters = {
     if (!state.editableFile) {
       return '';
     }
-    return state.editableFile.gpx.trk.name.replace(/\s/, '_');
+    const fileName = state.editableFile.gpx.trk.name.replace(/\s/g, '_');
+    return `${fileName}.gpx`;
   },
   [GET_ACTIVITY_TIMESTAMP]: (state) => {
     if (!state.editableFile) {

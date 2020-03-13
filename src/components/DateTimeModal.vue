@@ -1,7 +1,6 @@
 <template>
   <v-dialog
     v-model="showDialog"
-    persistent
     width="325px"
   >
     <template v-slot:activator="{ on }">
@@ -38,7 +37,6 @@
           required
           full-width
           :show-current="originalDate"
-          @change="updateDate"
         />
       </v-tab-item>
       <v-tab-item key="time">
@@ -49,7 +47,6 @@
           use-seconds
           ampm-in-title
           scrollable
-          @change="updateTime"
         />
       </v-tab-item>
     </v-tabs-items>
@@ -113,13 +110,6 @@ export default {
     resetValues() {
       this.date = this.originalDate;
       this.time = this.originalTime;
-      console.log(this.date, this.time);
-    },
-    updateDate(value) {
-      console.log(value);
-    },
-    updateTime(value) {
-      console.log(value);
     },
     save() {
       const modified = moment(`${this.date}T${this.time}`);
