@@ -1,6 +1,6 @@
 import Parser from 'fast-xml-parser';
 
-import { clone, getPoints } from '../utils';
+import { clone, getPoints, shiftTimeStamps } from '../utils';
 
 import {
   SET_ORIGINAL_FILE,
@@ -27,6 +27,8 @@ export const PARSE_USER_SETTINGS = 'PARSE_USER_SETTINGS';
 export const SAVE_USER_SETTINGS = 'SAVE_USER_SETTINGS';
 export const RESET_FILE = 'RESET_FILE';
 export const CLOSE_FILE = 'CLOSE_FILE';
+export const UPDATE_ACTIVITY_NAME = 'UPDATE_ACTIVITY_NAME';
+export const SHIFT_TIME = 'SHIFT_TIME';
 
 const options = {
   ignoreAttributes: false,
@@ -106,6 +108,16 @@ const actions = {
   [CLOSE_FILE]({ commit }) {
     commit(SET_EDITABLE_FILE, null);
     commit(SET_ORIGINAL_FILE, null);
+  },
+  [UPDATE_ACTIVITY_NAME]({ commit, getters }, name) {
+    const editableJson = clone(getters[GET_EDITABLE_FILE]);
+
+    editableJson.gpx.trk.name = name;
+
+    commit(SET_EDITABLE_FILE, editableJson);
+  },
+  [SHIFT_TIME]({ commit, getters }, difference) {
+    commit(SET_EDITABLE_FILE, shiftTimeStamps(getters[GET_EDITABLE_FILE], difference));
   },
 };
 
