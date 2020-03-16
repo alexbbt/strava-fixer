@@ -9,14 +9,14 @@
   >
     <svg
       slot="marker"
-      height="20"
-      width="20"
+      :height="size * 2"
+      :width="size * 2"
     >
       <circle
-        cx="10"
-        cy="10"
-        r="8"
-        stroke="black"
+        :cx="size"
+        :cy="size"
+        :r="size - 2"
+        :stroke="outline"
         stroke-width="1"
         :fill="color"
       />
@@ -34,7 +34,7 @@ export default {
   props: {
     color: {
       type: String,
-      default: 'blue',
+      default: 'none',
     },
     coordinates: {
       type: Array,
@@ -43,6 +43,18 @@ export default {
     draggable: {
       type: Boolean,
       default: false,
+    },
+    size: {
+      type: Number,
+      default: 10,
+    },
+  },
+  computed: {
+    outline() {
+      if (this.color === 'none') {
+        return 'blue';
+      }
+      return 'black';
     },
   },
 };

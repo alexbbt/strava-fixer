@@ -13,7 +13,16 @@
       :layer="geojsonLayer"
     />
     <CircleMarker
-      color="blue"
+      color="green"
+      :size="8"
+      :coordinates="firstPoint"
+    />
+    <CircleMarker
+      color="red"
+      :size="8"
+      :coordinates="lastPoint"
+    />
+    <CircleMarker
       :coordinates="hoverPointCoordinates"
       :draggable="true"
       @click="clickPoint()"
@@ -22,7 +31,7 @@
     />
     <CircleMarker
       v-if="selectedPointCoordinates"
-      color="green"
+      color="blue"
       :coordinates="selectedPointCoordinates"
       :draggable="true"
       @dragstart="dragging = true"
@@ -77,6 +86,12 @@ export default {
       selectedPointIndex: GET_SELECTED_POINT_INDEX,
       hoverPointIndex: GET_HOVER_POINT_INDEX,
     }),
+    firstPoint() {
+      return this.coordinates[0];
+    },
+    lastPoint() {
+      return this.coordinates[this.coordinates.length - 1];
+    },
     selectedPointCoordinates() {
       if (this.selectedPointIndex === -1) {
         return null;
