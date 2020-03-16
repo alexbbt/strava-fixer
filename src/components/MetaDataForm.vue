@@ -1,5 +1,8 @@
 <template>
-  <v-form @input="$emit('input', $event)">
+  <v-form
+    @input="$emit('input', $event)"
+    @submit="$emit('input', $event)"
+  >
     <v-container>
       <v-row>
         <v-col
@@ -9,6 +12,7 @@
           <v-text-field
             :value="activityName"
             label="Activity Name"
+            prepend-icon="mdi-rename-box"
             outlined
             required
             :rules="[

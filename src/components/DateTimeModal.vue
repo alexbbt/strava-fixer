@@ -8,7 +8,7 @@
         :value="prettyTimestamp"
         label="Activity Start Time"
         outlined
-        prepend-icon="mdi-event"
+        prepend-icon="mdi-calendar"
         readonly
         required
         v-on="on"
@@ -20,10 +20,10 @@
       background-color="primary"
     >
       <v-tab key="date">
-        Date
+        <v-icon>mdi-calendar</v-icon>
       </v-tab>
       <v-tab key="time">
-        Time
+        <v-icon>mdi-clock-outline</v-icon>
       </v-tab>
     </v-tabs>
     <v-tabs-items
@@ -45,6 +45,7 @@
           v-model="time"
           required
           use-seconds
+          full-width
           ampm-in-title
           scrollable
         />
