@@ -19,6 +19,7 @@
     "moment": "^2.24.0",
     "rainbowvis.js": "^1.0.1",
     "vue": "^2.6.10",
+    "vue-div-100vh": "^0.1.2",
     "vue-loading-overlay": "^3.3.2",
     "vue-mapbox": "^0.4.1",
     "vue-router": "^3.1.3",

@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <Vue100vh>
     <div
       class="map"
     >
@@ -8,11 +8,12 @@
     </div>
     <TopNav />
     <BottomNav />
-  </div>
+  </Vue100vh>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import Vue100vh from 'vue-div-100vh';
 
 import { GET_POINTS } from '../store/getters';
 
@@ -24,6 +25,7 @@ import RouteMap from '../components/RouteMap';
 export default {
   name: 'MapPage',
   components: {
+    Vue100vh,
     ActionMenu,
     TopNav,
     BottomNav,
@@ -41,13 +43,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page {
+.map {
   height: 100%;
-  width: 100%;
-
-  .map {
-    height: 100%;
-    position: relative;
-  }
+  position: relative;
 }
 </style>
