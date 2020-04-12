@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 /* eslint-disable import/prefer-default-export */
 export function distanceBetweenPoints(a, b) {
   return Math.sqrt(
@@ -14,8 +16,8 @@ export function clone(obj) {
   );
 }
 
-export function getPoints(obj) {
-  return obj.gpx.trk.trkseg.trkpt;
+export function getPoints(gpxFile) {
+  return gpxFile.gpx.trk.trkseg.trkpt;
 }
 
 export function parseCoordinates(point) {
@@ -42,4 +44,26 @@ export function speedToColor(speed, min, max) {
 
 export function distanceFromAverage(average, speed) {
   return (speed * 100) / average;
+}
+
+export function shiftTimeStamps(gpxFile, difference) {
+  const clonedGpxFile = clone(gpxFile);
+
+  function shiftTime(timestamp) {
+    return moment(timestamp)
+      .add(difference, 'seconds')
+      .utc()
+      .format();
+  }
+
+  // eslint-disable-next-line no-param-reassign
+  clonedGpxFile.gpx.metadata.time = shiftTime(clonedGpxFile.gpx.metadata.time);
+
+  getPoints(clonedGpxFile)
+    .forEach((point) => {
+      // eslint-disable-next-line no-param-reassign
+      point.time = shiftTime(point.time);
+    });
+
+  return clonedGpxFile;
 }

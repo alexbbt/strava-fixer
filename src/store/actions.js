@@ -1,6 +1,6 @@
 import Parser from 'fast-xml-parser';
 
-import { clone, getPoints } from '../utils';
+import { clone, getPoints, shiftTimeStamps } from '../utils';
 
 import {
   SET_ORIGINAL_FILE,
@@ -13,6 +13,7 @@ import {
 import {
   GET_EDITABLE_FILE,
   GET_SELECTED_POINT_INDEX,
+  GET_ORIGINAL_FILE,
 } from './getters';
 
 export const PARSE_FILE = 'PARSE_FILE';
@@ -24,6 +25,10 @@ export const SHOW_BOTTOM_SHEET = 'SHOW_BOTTOM_SHEET';
 export const HIDE_BOTTOM_SHEET = 'HIDE_BOTTOM_SHEET';
 export const PARSE_USER_SETTINGS = 'PARSE_USER_SETTINGS';
 export const SAVE_USER_SETTINGS = 'SAVE_USER_SETTINGS';
+export const RESET_FILE = 'RESET_FILE';
+export const CLOSE_FILE = 'CLOSE_FILE';
+export const UPDATE_ACTIVITY_NAME = 'UPDATE_ACTIVITY_NAME';
+export const SHIFT_TIME = 'SHIFT_TIME';
 
 const options = {
   ignoreAttributes: false,
@@ -32,6 +37,13 @@ const options = {
 const actions = {
   [PARSE_FILE]({ commit }, file) {
     const tObj = Parser.getTraversalObj(file, options);
+    if (tObj.tagname !== '!xml') {
+      throw new Error('Invalid File Format: File is not an XML file');
+    }
+    if (!tObj.child.gpx) {
+      throw new Error('Invalid File Format: File is not a valid GPX file');
+    }
+
     const originalJson = Parser.convertToJson(tObj, options);
     const editableJson = Parser.convertToJson(tObj, options);
 
@@ -89,6 +101,23 @@ const actions = {
   [SAVE_USER_SETTINGS]({ commit }, settings) {
     window.localStorage.setItem('user-settings', JSON.stringify(settings));
     commit(SET_USER_SETTINGS, settings);
+  },
+  [RESET_FILE]({ commit, getters }) {
+    commit(SET_EDITABLE_FILE, getters[GET_ORIGINAL_FILE]);
+  },
+  [CLOSE_FILE]({ commit }) {
+    commit(SET_EDITABLE_FILE, null);
+    commit(SET_ORIGINAL_FILE, null);
+  },
+  [UPDATE_ACTIVITY_NAME]({ commit, getters }, name) {
+    const editableJson = clone(getters[GET_EDITABLE_FILE]);
+
+    editableJson.gpx.trk.name = name;
+
+    commit(SET_EDITABLE_FILE, editableJson);
+  },
+  [SHIFT_TIME]({ commit, getters }, difference) {
+    commit(SET_EDITABLE_FILE, shiftTimeStamps(getters[GET_EDITABLE_FILE], difference));
   },
 };
 

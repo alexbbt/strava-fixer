@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexUndoRedo from 'vuex-undo-redo';
+import createPersistedState from 'vuex-persistedstate';
 
 import actions from './actions';
 import getters from './getters';
@@ -23,4 +24,5 @@ export default new Vuex.Store({
   mutations,
   actions,
   getters,
+  plugins: [createPersistedState()],
 });

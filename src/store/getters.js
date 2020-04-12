@@ -8,6 +8,7 @@ import {
   distanceBetweenPoints,
   parseCoordinates,
   clone,
+  shiftTimeStamps,
 } from '../utils';
 
 const DEFAULT_SETTINGS = {
@@ -52,9 +53,12 @@ function GET_EXTRAS(point) {
 }
 
 export const GET_ORIGINAL_FILE = 'GET_ORIGINAL_FILE';
+export const GET_TIME_SHIFTED_ORIGINAL_FILE = 'GET_TIME_SHIFTED_ORIGINAL_FILE';
 export const GET_EDITABLE_FILE = 'GET_EDITABLE_FILE';
 export const GET_SHOW_BOTTOM_SHEET = 'GET_SHOW_BOTTOM_SHEET';
 export const GET_ACTIVITY_NAME = 'GET_ACTIVITY_NAME';
+export const GET_FILE_NAME = 'GET_FILE_NAME';
+export const GET_ACTIVITY_TIMESTAMP = 'GET_ACTIVITY_TIMESTAMP';
 export const GET_SELECTED_POINT = 'GET_SELECTED_POINT';
 export const GET_SELECTED_POINT_INDEX = 'GET_SELECTED_POINT_INDEX';
 export const GET_HOVER_POINT = 'GET_HOVER_POINT';
@@ -79,10 +83,23 @@ const getters = {
   [GET_HOVER_POINT_INDEX]: state => state.hoverPoint,
   [GET_HOVER_POINT]: state => getters[GET_POINTS](state)[state.hoverPoint],
   [GET_ACTIVITY_NAME]: (state) => {
-    if (!state.originalFile) {
+    if (!state.editableFile) {
       return '';
     }
-    return state.originalFile.gpx.trk.name.replace(/\s/, '_');
+    return state.editableFile.gpx.trk.name;
+  },
+  [GET_FILE_NAME]: (state) => {
+    if (!state.editableFile) {
+      return '';
+    }
+    const fileName = state.editableFile.gpx.trk.name.replace(/\s/g, '_');
+    return `${fileName}.gpx`;
+  },
+  [GET_ACTIVITY_TIMESTAMP]: (state) => {
+    if (!state.editableFile) {
+      return '';
+    }
+    return state.editableFile.gpx.metadata.time;
   },
   [GET_COORDINATES]: (state) => {
     if (state.editableFile) {
@@ -250,6 +267,15 @@ const getters = {
     const point = getters[GET_POINTS](state)[state.selectedPoint];
 
     return GET_EXTRAS(point);
+  },
+  [GET_TIME_SHIFTED_ORIGINAL_FILE]: (state) => {
+    const originalFile = getters[GET_ORIGINAL_FILE](state);
+    const editableFile = getters[GET_EDITABLE_FILE](state);
+
+    const diff = moment(editableFile.gpx.metadata.time)
+      .diff(originalFile.gpx.metadata.time, 'seconds');
+
+    return shiftTimeStamps(originalFile, diff);
   },
 };
 

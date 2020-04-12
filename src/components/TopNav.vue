@@ -4,6 +4,7 @@
       <HeadsUpDisplay />
     </div>
     <div class="right">
+      <CloseFile />
       <v-btn
         icon
         large
@@ -38,12 +39,14 @@
 <script>
 import HeadsUpDisplay from './HeadsUpDisplay';
 import Settings from './Settings';
+import CloseFile from './CloseFile';
 
 export default {
   name: 'MapPage',
   components: {
     HeadsUpDisplay,
     Settings,
+    CloseFile,
   },
 };
 </script>

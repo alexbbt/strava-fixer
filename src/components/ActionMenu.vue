@@ -7,8 +7,6 @@
     :right="true"
     direction="top"
     transition="slide-y-reverse-transition"
-    class="action-menu"
-    :class="{ 'mobile-action-menu': needsMobilePadding }"
   >
     <template v-slot:activator>
       <v-btn
@@ -84,12 +82,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@media (max-width: 599px) {
-
-  .mobile-action-menu {
-    margin-bottom: 115px;
-  }
-}
-</style>
