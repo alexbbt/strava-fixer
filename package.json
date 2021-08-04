@@ -23,7 +23,7 @@
     "vue-loading-overlay": "^3.3.2",
     "vue-mapbox": "^0.4.1",
     "vue-router": "^3.5.2",
-    "vuetify": "^2.1.0",
+    "vuetify": "^2.5.8",
     "vuex": "^3.1.2",
     "vuex-persistedstate": "^2.7.1",
     "vuex-undo-redo": "^1.1.4",
