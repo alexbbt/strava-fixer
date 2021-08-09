@@ -31,6 +31,7 @@
       >
         <v-icon>mdi-file-export</v-icon>
       </v-btn>
+      <Merge />
       <Settings />
     </div>
   </div>
@@ -40,6 +41,7 @@
 import HeadsUpDisplay from './HeadsUpDisplay';
 import Settings from './Settings';
 import CloseFile from './CloseFile';
+import Merge from './Merge';
 
 export default {
   name: 'MapPage',
@@ -47,6 +49,7 @@ export default {
     HeadsUpDisplay,
     Settings,
     CloseFile,
+    Merge,
   },
 };
 </script>

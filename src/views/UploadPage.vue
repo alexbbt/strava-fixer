@@ -36,14 +36,13 @@
 <script>
 import { mapActions } from 'vuex';
 
-import { PARSE_FILE } from '../store/actions';
+import { PARSE_FILE, IMPORT_FILE } from '../store/actions';
 
 export default {
   name: 'UploadPage',
   data() {
     return {
       loader: null,
-      loadingTimeout: null,
       errorTimeout: null,
       error: false,
       errorTitle: '',
@@ -53,12 +52,12 @@ export default {
   methods: {
     ...mapActions({
       parseFile: PARSE_FILE,
+      importFile: IMPORT_FILE,
     }),
     stopLoading() {
       if (this.loader) {
         this.loader.hide();
         this.loader = null;
-        window.clearTimeout(this.loadingTimeout);
         return true;
       }
       return false;
@@ -72,48 +71,24 @@ export default {
         this.error = false;
       }, 5000);
     },
-    uploadFile(file) {
-      if (!file) {
-        this.showError('Error reading file', 'No File Selected');
-        return;
-      }
-
-      if (!window.FileReader) {
-        // Browser is not compatible
-        this.showError('Error reading file', 'Browser is not compatable');
-        return;
-      }
-
+    async uploadFile(file) {
       this.stopLoading();
       this.loader = this.$loading.show();
 
-      const reader = new FileReader();
+      const result = await this.importFile(file);
 
-      reader.onload = (evt) => {
-        if (evt.target.readyState !== 2) return;
-        if (evt.target.error) {
-          this.stopLoading();
-          this.showError('Error reading file', evt.target.error);
-          return;
-        }
-
+      if (result.success) {
         try {
-          this.parseFile(evt.target.result);
+          this.parseFile(result.data);
           this.$router.push('map');
-          this.stopLoading();
         } catch (e) {
-          this.stopLoading();
           this.showError('Error parsing file', e.toString());
         }
-      };
+      } else {
+        this.showError(result.error.title, result.error.message);
+      }
 
-      reader.readAsText(file);
-
-      this.loadingTimeout = setTimeout(() => {
-        if (this.stopLoading()) {
-          this.showError('File took too long to parse');
-        }
-      }, 10000);
+      this.stopLoading();
     },
   },
 };

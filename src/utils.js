@@ -20,6 +20,10 @@ export function getPoints(gpxFile) {
   return gpxFile.gpx.trk.trkseg.trkpt;
 }
 
+export function appendPoints(a, b) {
+  return [...getPoints(a), ...getPoints(b)];
+}
+
 export function parseCoordinates(point) {
   if (point) {
     return [

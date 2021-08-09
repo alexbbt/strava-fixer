@@ -1,6 +1,8 @@
 import Parser from 'fast-xml-parser';
 
-import { clone, getPoints, shiftTimeStamps } from '../utils';
+import {
+  appendPoints, clone, getPoints, shiftTimeStamps,
+} from '../utils';
 
 import {
   SET_ORIGINAL_FILE,
@@ -16,7 +18,9 @@ import {
   GET_ORIGINAL_FILE,
 } from './getters';
 
+export const IMPORT_FILE = 'IMPORT_FILE';
 export const PARSE_FILE = 'PARSE_FILE';
+export const MERGE_FILE = 'MERGE_FILE';
 export const UPDATE_POINT = 'UPDATE_POINT';
 export const SET_SELECTED_POINT_INDEX = 'SET_SELECTED_POINT_INDEX';
 export const SET_HOVER_POINT_INDEX = 'SET_HOVER_POINT_INDEX';
@@ -35,6 +39,61 @@ const options = {
 };
 
 const actions = {
+  [IMPORT_FILE]: (state, file) => {
+    if (!file) {
+      return {
+        success: false,
+        error: { title: 'Error reading file', message: 'No File Selected' },
+      };
+    }
+
+    if (!window.FileReader) {
+      // Browser is not compatible
+      return {
+        success: false,
+        error: { title: 'Error reading file', message: 'Browser is not compatible' },
+      };
+    }
+
+    let finished = false;
+
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+
+      reader.onload = (evt) => {
+        if (evt.target.readyState !== 2) return;
+
+        if (finished) return;
+        finished = true;
+
+        if (evt.target.error) {
+          resolve({
+            success: false,
+            error: { title: 'Error reading file', message: evt.target.error },
+          });
+          return;
+        }
+
+        resolve({
+          success: true,
+          data: evt.target.result,
+        });
+      };
+
+      reader.readAsText(file);
+
+      setTimeout(() => {
+        if (!finished) {
+          finished = true;
+          resolve({
+            success: false,
+            error: { title: 'File took too long to parse' },
+          });
+        }
+      }, 10000);
+    });
+  },
+
   [PARSE_FILE]({ commit }, file) {
     const tObj = Parser.getTraversalObj(file, options);
     if (tObj.tagname !== '!xml') {
@@ -50,6 +109,23 @@ const actions = {
     commit(SET_ORIGINAL_FILE, originalJson);
     commit(SET_EDITABLE_FILE, editableJson);
   },
+
+  [MERGE_FILE]({ commit, getters }, file) {
+    const tObj = Parser.getTraversalObj(file, options);
+    if (tObj.tagname !== '!xml') {
+      throw new Error('Invalid File Format: File is not an XML file');
+    }
+    if (!tObj.child.gpx) {
+      throw new Error('Invalid File Format: File is not a valid GPX file');
+    }
+    const json = Parser.convertToJson(tObj, options);
+    const existingJson = clone(getters[GET_EDITABLE_FILE]);
+
+    existingJson.gpx.trk.trkseg.trkpt = appendPoints(existingJson, json);
+
+    commit(SET_EDITABLE_FILE, existingJson);
+  },
+
   [UPDATE_POINT](
     { commit, getters },
     {
