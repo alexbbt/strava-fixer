@@ -11,7 +11,7 @@
   "dependencies": {
     "@sentry/browser": "^5.13.2",
     "@sentry/integrations": "^6.11.0",
-    "chroma-js": "^2.1.0",
+    "chroma-js": "^2.1.2",
     "core-js": "^3.4.4",
     "diff-arrays-of-objects": "^1.1.5",
     "fast-xml-parser": "^3.16.0",
