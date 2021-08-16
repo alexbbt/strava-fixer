@@ -37,9 +37,9 @@ function GET_EXTRAS(point) {
         .forEach(([key, value]) => {
           const name = key.replace('gpxtpx:', '');
           const showKey = `show ${NAME_MAP[name] || name}`
-            .replace(/\s(.)/g, a => a.toUpperCase())
+            .replace(/\s(.)/g, (a) => a.toUpperCase())
             .replace(/\s/g, '')
-            .replace(/^(.)/, b => b.toLowerCase());
+            .replace(/^(.)/, (b) => b.toLowerCase());
 
           extras.push({
             showKey,
@@ -75,13 +75,13 @@ export const GET_SETTINGS = 'GET_SETTINGS';
 export const GET_SELECTED_POINT_EXTRAS = 'GET_SELECTED_POINT_EXTRAS';
 
 const getters = {
-  [GET_ORIGINAL_FILE]: state => state.originalFile,
-  [GET_EDITABLE_FILE]: state => state.editableFile,
-  [GET_SHOW_BOTTOM_SHEET]: state => state.showBottomSheet,
-  [GET_SELECTED_POINT_INDEX]: state => state.selectedPoint,
-  [GET_SELECTED_POINT]: state => getters[GET_POINTS](state)[state.selectedPoint],
-  [GET_HOVER_POINT_INDEX]: state => state.hoverPoint,
-  [GET_HOVER_POINT]: state => getters[GET_POINTS](state)[state.hoverPoint],
+  [GET_ORIGINAL_FILE]: (state) => state.originalFile,
+  [GET_EDITABLE_FILE]: (state) => state.editableFile,
+  [GET_SHOW_BOTTOM_SHEET]: (state) => state.showBottomSheet,
+  [GET_SELECTED_POINT_INDEX]: (state) => state.selectedPoint,
+  [GET_SELECTED_POINT]: (state) => getters[GET_POINTS](state)[state.selectedPoint],
+  [GET_HOVER_POINT_INDEX]: (state) => state.hoverPoint,
+  [GET_HOVER_POINT]: (state) => getters[GET_POINTS](state)[state.hoverPoint],
   [GET_ACTIVITY_NAME]: (state) => {
     if (!state.editableFile) {
       return '';
@@ -104,7 +104,7 @@ const getters = {
   [GET_COORDINATES]: (state) => {
     if (state.editableFile) {
       return getPoints(state.editableFile)
-        .map(point => parseCoordinates(point));
+        .map((point) => parseCoordinates(point));
     }
     return false;
   },
@@ -131,7 +131,7 @@ const getters = {
       /* eslint-enable no-param-reassign */
     }, [0, 0]);
   },
-  [GET_GEO_JSON]: state => ({
+  [GET_GEO_JSON]: (state) => ({
     type: 'geojson',
     lineMetrics: true,
     data: {
@@ -252,8 +252,8 @@ const getters = {
       indentation: ' ',
     });
   },
-  [GET_USER_SETTINGS]: state => clone(state.userSettings),
-  [GET_SETTINGS]: state => ({
+  [GET_USER_SETTINGS]: (state) => clone(state.userSettings),
+  [GET_SETTINGS]: (state) => ({
     ...DEFAULT_SETTINGS,
     ...GET_EXTRAS(getters[GET_POINTS](state)[0])
       .reduce((map, current) => {
