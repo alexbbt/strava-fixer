@@ -13,7 +13,7 @@
     "@sentry/integrations": "^6.11.0",
     "chroma-js": "^2.1.2",
     "core-js": "^3.16.2",
-    "diff-arrays-of-objects": "^1.1.5",
+    "diff-arrays-of-objects": "^1.1.9",
     "fast-xml-parser": "^3.16.0",
     "mapbox-gl": "^2.4.0",
     "moment": "^2.29.1",
