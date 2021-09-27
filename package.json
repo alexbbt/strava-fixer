@@ -9,7 +9,7 @@
     "stylelint": "stylelint src/**/*.vue"
   },
   "dependencies": {
-    "@sentry/browser": "^6.12.0",
+    "@sentry/browser": "^6.13.2",
     "@sentry/integrations": "^6.12.0",
     "chroma-js": "^2.1.2",
     "core-js": "^3.17.3",
@@ -25,9 +25,9 @@
     "vue-router": "^3.5.2",
     "vuetify": "^2.5.8",
     "vuex": "^3.6.2",
-    "vuex-persistedstate": "^4.0.0",
+    "vuex-persistedstate": "^4.1.0",
     "vuex-undo-redo": "^1.1.4",
-    "xml-formatter": "^2.4.0"
+    "xml-formatter": "^2.4.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.13",
@@ -40,7 +40,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^6.2.2",
     "node-sass": "^4.12.0",
-    "sass": "^1.41.1",
+    "sass": "^1.42.1",
     "sass-loader": "^8.0.0",
     "stylelint": "^8.4.0",
     "stylelint-order": "^4.1.0",
