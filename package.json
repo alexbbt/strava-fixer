@@ -27,7 +27,7 @@
     "vuex": "^3.6.2",
     "vuex-persistedstate": "^4.1.0",
     "vuex-undo-redo": "^1.1.4",
-    "xml-formatter": "^2.5.1"
+    "xml-formatter": "^2.6.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.15",
@@ -40,7 +40,7 @@
     "eslint": "^6.8.0",
     "eslint-plugin-vue": "^8.2.0",
     "node-sass": "^7.0.0",
-    "sass": "^1.45.0",
+    "sass": "^1.45.1",
     "sass-loader": "^8.0.0",
     "stylelint": "^8.4.0",
     "stylelint-order": "^5.0.0",
