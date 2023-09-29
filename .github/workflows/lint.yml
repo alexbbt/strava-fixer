@@ -29,3 +29,6 @@ jobs:
           # Enable your linters here
           eslint: true
           auto_fix: true
+
+      - name: Test Build
+        run: npm run build
