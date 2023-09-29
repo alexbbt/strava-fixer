@@ -127,7 +127,7 @@ export default {
     },
     filteredExtras() {
       return this.selectedPointExtras
-        .filter(extra => this.settings[extra.showKey] == null || this.settings[extra.showKey]);
+        .filter((extra) => this.settings[extra.showKey] == null || this.settings[extra.showKey]);
     },
   },
   methods: {

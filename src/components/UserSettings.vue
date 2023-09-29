@@ -2,7 +2,7 @@
   <v-dialog
     v-model="dialog"
   >
-    <template v-slot:activator="{ on }">
+    <template #activator="{ on }">
       <v-btn
         icon
         large
@@ -50,7 +50,7 @@ import { SAVE_USER_SETTINGS } from '../store/actions';
 import { clone } from '../utils';
 
 export default {
-  name: 'Settings',
+  name: 'UserSettings',
   data() {
     return {
       dialog: false,

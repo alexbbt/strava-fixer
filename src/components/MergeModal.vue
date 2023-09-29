@@ -2,7 +2,7 @@
   <v-dialog
     v-model="dialog"
   >
-    <template v-slot:activator="{ on }">
+    <template #activator="{ on }">
       <v-btn
         icon
         large
@@ -68,7 +68,7 @@ import { GET_SETTINGS, GET_USER_SETTINGS } from '../store/getters';
 import { IMPORT_FILE, MERGE_FILE } from '../store/actions';
 
 export default {
-  name: 'Settings',
+  name: 'MergeModal',
   data() {
     return {
       dialog: false,

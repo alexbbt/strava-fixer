@@ -173,7 +173,7 @@ const getters = {
       );
 
       const duration = moment(next.time).diff(moment(current.time));
-      const speed = distance / duration * 10000000;
+      const speed = (distance / duration) * 10000000;
 
       totalDistance += distance;
       totalDuration += duration;
@@ -184,7 +184,7 @@ const getters = {
       speeds.push(speed);
     }
 
-    const averageSpeed = totalDistance / totalDuration * 10000000;
+    const averageSpeed = (totalDistance / totalDuration) * 10000000;
 
     const gradient = new Rainbow();
     gradient.setNumberRange(-1, 1);
@@ -197,7 +197,7 @@ const getters = {
       // Calculate color from speed
       let speedFromAverage;
       if (speed < averageSpeed) {
-        speedFromAverage = -1 * (speed - averageSpeed) / (minSpeed - averageSpeed);
+        speedFromAverage = -1 * ((speed - averageSpeed) / (minSpeed - averageSpeed));
       } else {
         speedFromAverage = (speed - averageSpeed) / (maxSpeed - averageSpeed);
       }

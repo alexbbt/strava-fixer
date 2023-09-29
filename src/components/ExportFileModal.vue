@@ -2,7 +2,7 @@
   <v-dialog
     v-model="dialog"
   >
-    <template v-slot:activator="{ on }">
+    <template #activator="{ on }">
       <v-btn
         rounded
         color="primary"
@@ -61,7 +61,7 @@ import { mapGetters } from 'vuex';
 import { GET_FILE_NAME } from '../store/getters';
 
 export default {
-  name: 'Settings',
+  name: 'ExportFileModal',
   props: {
     disabled: {
       type: Boolean,

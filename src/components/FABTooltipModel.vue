@@ -2,9 +2,9 @@
   <v-dialog
     v-model="open"
   >
-    <template v-slot:activator="{ on: dialog }">
+    <template #activator="{ on: dialog }">
       <v-tooltip right>
-        <template v-slot:activator="{ on: tooltip }">
+        <template #activator="{ on: tooltip }">
           <v-btn
             fab
             dark

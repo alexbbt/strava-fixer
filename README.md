@@ -5,7 +5,7 @@ Edit data points in your Strava recordings to fix GPS glitches.
 Visit [strava-fixer.bell-towne.com](https://strava-fixer.bell-towne.com/) to use the tool.
 
 ## Development
-[![Build Status](https://semaphoreci.com/api/v1/alexbbt/strava-fixer/branches/master/badge.svg)](https://semaphoreci.com/alexbbt/strava-fixer)
+![Build Status](https://github.com/alexbbt/strava-fixer/actions/workflows/deploy.yml/badge.svg)
 
 ### Setup and Run Dev Server
 

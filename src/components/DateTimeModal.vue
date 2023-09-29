@@ -3,7 +3,7 @@
     v-model="showDialog"
     width="325px"
   >
-    <template v-slot:activator="{ on }">
+    <template #activator="{ on }">
       <v-text-field
         :value="prettyTimestamp"
         label="Activity Start Time"
@@ -74,7 +74,7 @@
 import moment from 'moment';
 
 export default {
-  name: 'MetaDataForm',
+  name: 'DateTimeModal',
   props: {
     timestamp: {
       type: String,

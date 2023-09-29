@@ -31,25 +31,25 @@
       >
         <v-icon>mdi-file-export</v-icon>
       </v-btn>
-      <Merge />
-      <Settings />
+      <MergeModal />
+      <UserSettings />
     </div>
   </div>
 </template>
 
 <script>
 import HeadsUpDisplay from './HeadsUpDisplay';
-import Settings from './Settings';
+import UserSettings from './UserSettings';
 import CloseFile from './CloseFile';
-import Merge from './Merge';
+import MergeModal from './MergeModal';
 
 export default {
-  name: 'MapPage',
+  name: 'TopNav',
   components: {
     HeadsUpDisplay,
-    Settings,
+    UserSettings,
     CloseFile,
-    Merge,
+    MergeModal,
   },
 };
 </script>

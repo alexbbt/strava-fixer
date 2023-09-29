@@ -6,7 +6,7 @@
       transition="slide-y-transition"
       class="fab"
     >
-      <template v-slot:activator>
+      <template #activator>
         <v-btn
           v-model="fab"
           color="black"
@@ -53,7 +53,7 @@ import { RESET_FILE, CLOSE_FILE } from '../store/actions';
 import FABTooltipModel from './FABTooltipModel';
 
 export default {
-  name: 'Settings',
+  name: 'CloseFile',
   components: {
     FABTooltipModel,
   },
