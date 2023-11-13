@@ -9,7 +9,7 @@
     "stylelint": "stylelint src/**/*.vue"
   },
   "dependencies": {
-    "@sentry/browser": "^6.16.1",
+    "@sentry/browser": "^7.80.0",
     "@sentry/integrations": "^7.77.0",
     "chroma-js": "^2.4.2",
     "core-js": "^3.33.2",
