@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@sentry/browser": "^7.80.0",
-    "@sentry/integrations": "^7.77.0",
+    "@sentry/integrations": "^7.80.1",
     "chroma-js": "^2.4.2",
     "core-js": "^3.33.2",
     "diff-arrays-of-objects": "^1.1.9",
