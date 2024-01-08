@@ -43,7 +43,7 @@
     "sass": "^1.69.7",
     "sass-loader": "^8.0.0",
     "stylelint": "^8.4.0",
-    "stylelint-order": "^5.0.0",
+    "stylelint-order": "^6.0.4",
     "stylelint-scss": "^3.21.0",
     "vue-cli-plugin-stylelint": "0.0.2",
     "vue-cli-plugin-vuetify": "^2.5.8",
