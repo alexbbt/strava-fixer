@@ -15,7 +15,7 @@
     "core-js": "^3.35.0",
     "diff-arrays-of-objects": "^1.1.9",
     "fast-xml-parser": "^4.3.2",
-    "mapbox-gl": "^2.15.0",
+    "mapbox-gl": "^3.0.1",
     "moment": "^2.29.4",
     "rainbowvis.js": "^1.1.1",
     "vue": "^2.7.16",
