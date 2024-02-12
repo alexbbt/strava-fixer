@@ -18,7 +18,7 @@
     "mapbox-gl": "^3.1.0",
     "moment": "^2.30.1",
     "rainbowvis.js": "^1.1.1",
-    "vue": "^2.7.16",
+    "vue": "^3.4.18",
     "vue-div-100vh": "^0.2.1",
     "vue-loading-overlay": "^3.4.2",
     "vue-mapbox": "^0.4.1",
