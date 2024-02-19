@@ -20,7 +20,7 @@
     "rainbowvis.js": "^1.1.1",
     "vue": "^2.7.16",
     "vue-div-100vh": "^0.2.1",
-    "vue-loading-overlay": "^3.4.2",
+    "vue-loading-overlay": "^3.4.3",
     "vue-mapbox": "^0.4.1",
     "vue-router": "^3.6.5",
     "vuetify": "^2.7.1",
