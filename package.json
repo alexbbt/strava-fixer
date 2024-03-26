@@ -41,7 +41,7 @@
     "eslint-plugin-vue": "^8.7.1",
     "node-sass": "^9.0.0",
     "sass": "^1.72.0",
-    "sass-loader": "^8.0.0",
+    "sass-loader": "^13.3.3",
     "stylelint": "^8.4.0",
     "stylelint-order": "^5.0.0",
     "stylelint-scss": "^3.21.0",
